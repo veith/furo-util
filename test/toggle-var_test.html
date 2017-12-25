@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>flowbased-polymer test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../toggle-var.html">
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <toggle-var></toggle-var>
+  </template>
+</test-fixture>
+<test-fixture id="enable">
+  <template>
+    <toggle-var></toggle-var>
+  </template>
+</test-fixture>
+
+<script>
+  suite('toggle-var', function () {
+
+
+    test('toggle', function () {
+      var element = fixture('basic');
+      element.value = true;
+      element.toggle();
+      assert.equal(element.value, false);
+      element.toggle();
+      assert.equal(element.value, true);
+
+    });
+
+    test('enable', function (done) {
+      var element = fixture('enable');
+
+      element.addEventListener('value-enabled',(e)=>{
+        assert.equal(e.detail, 7);
+        done()
+      });
+
+
+      element.toggle(7);
+
+
+    });
+
+
+    test('enable', function (done) {
+      var element = fixture('enable');
+      element.value = true;
+      element.addEventListener('value-disabled',(e)=>{
+        assert.equal(e.detail, 7);
+        done()
+      });
+
+
+      element.toggle(7);
+
+
+    });
+
+
+
+  });
+</script>
+</body>
+</html>

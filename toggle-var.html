@@ -39,8 +39,9 @@
      * @param data
      */
     toggle(data) {
-      this.set('value', !this.value);
       this._toggleData = data;
+      this.set('value', !this.value);
+
     }
 
     _changeEmitter(b) {
@@ -61,6 +62,7 @@
            * Fired when value changes to false
            * detail payload: passed data from toggle
            */
+
           let customEvent = new Event('value-disabled', {composed: true, bubbles: this.bubbles});
           customEvent.detail = this._toggleData;
           this.dispatchEvent(customEvent)
