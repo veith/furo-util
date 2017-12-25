@@ -1,0 +1,49 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<script>
+  /**
+   * `delay-event` Delays an event for a given duration (default 250ms)
+   *
+   * ```
+   * <delay-event ƒ-input="--buttonClicked" @-output="--delayedClick"></delay-event>
+   * ```
+   *
+   * @customElement
+   * @polymer
+   */
+  class DelayEvent extends Polymer.Element {
+
+    static get is() {
+      return 'delay-event';
+    }
+
+    static get properties() {
+      return {
+        /**
+         * Delay duration in ms
+         */
+        duration: {type: Number, value: 250,},
+        /**
+         * By default delay-event's events will not bubble. Set this attribute, if you need bubbling events.
+         */
+        bubbles: {type: Boolean, value: false,},
+      }
+    }
+
+    input(data) {
+      let self = this;
+      setTimeout(function () {
+        /**
+         * @event output
+         * Fired when delay period is over
+         * detail payload: incomming data
+         */
+        let customEvent = new Event('output', {composed: true, bubbles: this.bubbles});
+        customEvent.detail = data;
+        self.dispatchEvent(customEvent);
+      }, self.delay)
+    }
+  }
+
+  window.customElements.define(DelayEvent.is, DelayEvent);
+
+</script>

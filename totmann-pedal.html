@@ -1,0 +1,54 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+
+<script>
+  /**
+   * `totmann-pedal`
+   *
+   *  A dead man's switch (for other names, see alternative names) is a switch that is automatically operated if the human operator becomes incapacitated, such as through death, loss of consciousness, or being bodily removed from control. Originally applied to switches on a vehicle or machine, it has since come to be used to describe other intangible uses like in computer software.
+   *
+   *  These switches are usually used as a form of fail-safe where they stop a machine with no operator from potentially dangerous action or incapacitate a device as a result of accident, malfunction, or misuse. They are common in such applications in locomotives, aircraft refuelling, freight elevators, lawn mowers, tractors, personal watercraft, outboard motors, chainsaws, snowblowers, tread machines, snowmobiles, amusement rides, and many medical imaging devices. On some machines, these switches merely bring the machines back to a safe state, such as reducing the throttle to idle or applying brakes while leaving the machines still running and ready to resume normal operation once control is reestablished.
+   *  [Wikipedia](https://en.wikipedia.org/wiki/Dead_man%27s_switch)
+   *
+   * @customElement
+   * @polymer
+   */
+  class TotmannPedal extends Polymer.Element {
+    constructor() {
+      super();
+    }
+
+    static get is() {
+      return 'totmann-pedal';
+    }
+
+    static get properties() {
+      return {
+        /**
+         * The max time between the signals in ms.
+         */
+        duration: {type: Number, value: 2500}
+      }
+    }
+
+    /**
+     * Your signal to show, that you are alife
+     *
+     * If signal is not called in the defined time, the `not-alive` event will be triggered
+     */
+    signal() {
+      /**
+       * @event not-alive
+       * Fired when signal is not called in time
+       *
+       * detail payload: Date of last call
+       */
+      let customEvent = new Event('not-alive', {composed: true, bubbles: true});
+      customEvent.detail = new Date();
+      this.dispatchEvent(customEvent)
+    }
+  }
+
+  window.customElements.define(TotmannPedal.is, TotmannPedal);
+
+</script>

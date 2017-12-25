@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+
+<script>
+  /**
+   * `lazy-load` Convenience method for declarativ importing an HTML document.
+   *
+   * This component creates a new `<link rel="import">` element with
+   * the provided URL and appends it to the document to start loading.
+   * In the `loaded` event, the `import` property of the
+   * element will contain the imported document contents.
+   *
+   * ```
+   * <app-route route="{{_route}}" pattern="[[rootPath]]:page" data="{{routeData}}">
+   *   </app-route>
+   *
+   * <default-value default-value="view1" input="[[routeData.page]]" output="{{page}}">
+   *   </default-value>
+   *
+   * <!-- lazy loader -->
+   * <lazy-load element="[[page]]" pattern="/src/my-:element.html" @-error="--loadErrored">
+   *   </lazy-load>
+   *
+   * <!-- load view404 if element was not found -->
+   * <default-value default-value="view404" ƒ-set-default="--loadErrored" output="{{page}}">
+   *   </default-value>
+   *
+   * ```
+   *
+   * @customElement
+   * @polymer
+   */
+
+  class LazyLoad extends (Polymer.Element) {
+    constructor() {
+      super();
+    }
+
+    static get is() {
+      return 'lazy-load';
+    }
+
+    static get properties() {
+      return {
+        /**
+         * The element name to be loaded. Will be mixed with the pattern property.
+         */
+        element: {
+          type: String,
+          observer: 'load',
+        },
+        /**
+         * The pattern to be applied.
+         *
+         * `/src/my-:element.html` with element `viewHome` will load `/src/my-viewHome.html`
+         */
+        pattern: {
+          type: String,
+        },
+      };
+    }
+
+    /**
+     * Applies the pattern and imports the element
+     * @param element
+     */
+    load(element) {
+      if (element !== undefined) {
+        let resolved = this.pattern.replace(':element', element);
+        Polymer.importHref(
+            resolved,
+            this._loaded.bind(this),
+            this._error.bind(this),
+            true);
+      }
+    }
+
+    _loaded(event) {
+      /**
+       * @event loaded
+       * Fired when In case of a successful load, cache the load event on the
+       * link so that it can be used to short-circuit this method in the future
+       * when it is called with the same href param.
+       * detail payload: event
+       */
+      let customEvent = new Event('loaded', {composed: true, bubbles: true});
+      customEvent.detail = event;
+      this.dispatchEvent(customEvent);
+    }
+
+    _error(event) {
+      /**
+       * @event error
+       * Fired when in case of an error, remove the link from the document so
+       * that it will be automatically created again the next time
+       * `importHref` is called.
+       * detail payload: event
+       */
+      let customEvent = new Event('error', {composed: true, bubbles: true});
+      customEvent.detail = event;
+      this.dispatchEvent(customEvent);
+    }
+  }
+
+  window.customElements.define(LazyLoad.is, LazyLoad);
+
+</script>

@@ -1,0 +1,35 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<script>
+    /**
+     * `event-gate`
+     * 
+     *
+     * @customElement
+     * @polymer
+     */
+    class EventGate extends (Polymer.Element) {
+        constructor() {
+            super();       
+        }
+
+        static get is() {
+            return 'event-gate';
+        }
+        static get properties() {
+            return {
+              bubbles:Boolean,
+              pass:Boolean,
+              block:Boolean
+            }
+        }
+
+        trigger(e){
+
+
+      }
+    }
+
+    window.customElements.define(EventGate.is, EventGate);
+
+</script>

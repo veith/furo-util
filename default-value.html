@@ -1,0 +1,60 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<script>
+  /**
+   * With `default-value` you can set a default value in a declarative way.
+   *
+   * ```
+   * <default-value default-value="view1" input="[[routeData.page]]" output="{{page}}"></default-value>
+   * ```
+   *
+   * You can use `default-value` also as an **or** (`input || default-value`).
+   *
+   *
+   *
+   * @customElement
+   * @polymer
+   * @demo demo/index.html
+   */
+  class DefaultValue extends (Polymer.Element) {
+    constructor() {
+      super();
+    }
+
+    static get is() {
+      return 'default-value';
+    }
+
+    static get properties() {
+      return {
+        /**
+         * If this value is not set or falsy, the default-value is used.
+         */
+        input: {type: String, observer: '_setOut'},
+        /**
+         * The default value which is used when input is falsy
+         */
+        defaultValue: String,
+        /**
+         * The output
+         */
+        output: {type: String, notify: true},
+      };
+    }
+
+    setDefault() {
+      this.set('output', this.defaultValue);
+    }
+
+    _setOut(input) {
+      if (!input) {
+        this.set('output', this.defaultValue);
+      } else {
+        this.set('output', input);
+      }
+    }
+  }
+
+  window.customElements.define(DefaultValue.is, DefaultValue);
+
+</script>

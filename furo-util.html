@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="furo-util">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `furo-util`
+     * A set of utility components to make declarative polymer and fbp easyier. 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FuroUtil extends Polymer.Element {
+      static get is() { return 'furo-util'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'furo-util'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(FuroUtil.is, FuroUtil);
+  </script>
+</dom-module>

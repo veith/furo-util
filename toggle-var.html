@@ -1,0 +1,74 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<script>
+  /**
+   * `toggle-var` toggles a boolean value.
+   *
+   *        <toggle-var ƒ-toggle="--menuClicked" value="{{narrow}}"></toggle-var>
+   *
+   * @customElement
+   * @polymer
+   * @demo demo/index.html
+   */
+  class ToggleVar extends (Polymer.Element) {
+
+    constructor() {
+      super();
+    }
+
+    static get is() {
+      return 'toggle-var';
+    }
+
+    static get properties() {
+      return {
+        /**
+         * The boolean you want to toggle
+         */
+        value: {type: Boolean, notify: true, observer: '_changeEmitter'},
+        /**
+         * By default toggle-var's events will not bubble. Set this attribute if you need bubbling events (enabled / disabled).
+         */
+        bubbles:{type:Boolean, value:false},
+      }
+    }
+
+    /**
+     * Toggles the value in attribute value.
+     *
+     * Everything you pass as argument `data` will be emitted with the enabled or disabled event.
+     * @param data
+     */
+    toggle(data) {
+      this.set('value', !this.value);
+      this._toggleData = data;
+    }
+
+    _changeEmitter(b) {
+      if (b !== undefined) {
+        if (b) {
+          /**
+           * @event value-enabled
+           *
+           * Fired when value changes to true
+           * detail payload: passed data from toggle
+           */
+          let customEvent = new Event('value-enabled', {composed: true, bubbles: this.bubbles});
+          customEvent.detail = this._toggleData;
+          this.dispatchEvent(customEvent)
+        } else {
+          /**
+           * @event value-disabled
+           * Fired when value changes to false
+           * detail payload: passed data from toggle
+           */
+          let customEvent = new Event('value-disabled', {composed: true, bubbles: this.bubbles});
+          customEvent.detail = this._toggleData;
+          this.dispatchEvent(customEvent)
+        }
+      }
+    }
+  }
+
+  window.customElements.define(ToggleVar.is, ToggleVar);
+
+</script>

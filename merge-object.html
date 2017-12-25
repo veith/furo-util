@@ -1,0 +1,84 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+Fusioniert 2 Objekte. Erstellt ein neues Objekt (out) aus den Attributen von Objekt 1 (in1) und Objekt 2 (in2).
+
+Die Eingehenden Objekte werden nicht verändert.
+
+@author simon, vzaech
+@date 14.11.16
+-->
+
+<dom-module id="merge-object">
+
+    <template>
+
+        <style>
+            :host {
+                display: none;
+            }
+        </style>
+    </template>
+
+    <script>
+
+        Polymer({
+            is: 'merge-object',
+            properties: {
+                /*
+                 * Objekt 1 wird mit Objekt 2 erweitert. Objekt 2 überschreibt Attribute von Objekt 1
+                 */
+                in1: {
+                    type: Object
+                },
+                /*
+                 * Objekt 2 erweitert Objekt 1 und überschreibt Attribute mit gleichem Namen
+                 */
+                in2: {
+                    type: Object
+                },
+                /*
+                 * Neues Objekt, das alle Attributen von Objekt 1 und Objekt 2 beinhaltet
+                 */
+                out: {
+                    type: Object,
+                    notify: true
+                },
+                /*
+                 * Wenn eines der beiden Objekten leer ist, wird kein Output generiert
+                 */
+                ignoreEmpty: {
+                    type: Boolean,
+                    value: false
+                }
+
+            },
+
+            observers: ['_change(in1, in2)'],
+            _change: function (in1, in2) {
+
+                    var notify1 = false, notify2 = false;
+                    var out = {};
+
+                    var attrname;
+                    for (attrname in this.in1) {
+                        if (this.in1.hasOwnProperty(attrname)) {
+                            out[attrname] = this.in1[attrname];
+                            notify1 = true;
+                        }
+                    }
+
+                    for (attrname in this.in2) {
+                        if (this.in2.hasOwnProperty(attrname)) {
+                            out[attrname] = this.in2[attrname];
+                            notify2 = true;
+                        }
+                    }
+                    if ((!this.ignoreEmpty && notify1 && notify2) ) {
+                        this.set("out", out);
+                    }
+
+            }
+        });
+    </script>
+</dom-module>

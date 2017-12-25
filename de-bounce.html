@@ -1,0 +1,26 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<script>
+    /**
+     * `de-bounce` is a declarative debouncer.
+     *
+     *
+     * @customElement
+     * @polymer
+     */
+    class DeBounce extends (Polymer.Element) {
+        constructor() {
+            super();
+        }
+
+        static get is() {
+            return 'de-bounce';
+        }
+        static get properties() {
+            return {}
+        }
+    }
+
+    window.customElements.define(DeBounce.is, DeBounce);
+
+</script>
