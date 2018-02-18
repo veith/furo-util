@@ -8,13 +8,13 @@
    * <default-value default-value="view1" input="[[routeData.page]]" output="{{page}}"></default-value>
    * ```
    *
-   * You can use `default-value` also as an **or** (`input || default-value`).
+   * You can use `default-value` also as an **or** condition for a value (`input || default-value`).
    *
    *
    *
    * @customElement
    * @polymer
-   * @demo demo/index.html
+   * @demo demo/default-value.html
    */
   class DefaultValue extends (Polymer.Element) {
     constructor() {
@@ -30,15 +30,15 @@
         /**
          * If this value is not set or falsy, the default-value is used.
          */
-        input: {type: String, observer: '_setOut'},
+        input: {type: Object, observer: '_setOut'},
         /**
          * The default value which is used when input is falsy
          */
-        defaultValue: String,
+        defaultValue: {type: Object, observer: '_setOut'},
         /**
          * The output
          */
-        output: {type: String, notify: true},
+        output: {type: Object, notify: true},
       };
     }
 

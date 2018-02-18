@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>flowbased-polymer test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../default-value.html">
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <default-value></default-value>
+  </template>
+</test-fixture>
+
+
+<script>
+  suite('default-value', function () {
+
+
+    test('no input and no default is set, should give undefined', function () {
+      var element = fixture('basic');
+      assert.equal(element.output, undefined);
+    });
+
+    test('no input is set, should give the default value', function () {
+      var element = fixture('basic');
+      element.set('defaultValue', 8);
+      assert.equal(element.output, 8);
+    });
+
+
+    test('with input is set, should give the input value as output', function () {
+      var element = fixture('basic');
+      element.set('input', 'input is set');
+      assert.equal(element.output, 'input is set');
+    });
+
+
+  });
+</script>
+</body>
+</html>

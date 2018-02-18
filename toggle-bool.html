@@ -1,22 +1,22 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <script>
   /**
-   * `toggle-var` toggles a boolean value.
+   * `toggle-bool` toggles a boolean value.
    *
-   *        <toggle-var ƒ-toggle="--menuClicked" value="{{narrow}}"></toggle-var>
+   *        <toggle-bool ƒ-toggle="--menuClicked" value="{{narrow}}"></toggle-bool>
    *
    * @customElement
    * @polymer
    * @demo demo/index.html
    */
-  class ToggleVar extends (Polymer.Element) {
+  class ToggleBool extends (Polymer.Element) {
 
     constructor() {
       super();
     }
 
     static get is() {
-      return 'toggle-var';
+      return 'toggle-bool';
     }
 
     static get properties() {
@@ -26,7 +26,7 @@
          */
         value: {type: Boolean, notify: true, observer: '_changeEmitter'},
         /**
-         * By default toggle-var's events will not bubble. Set this attribute if you need bubbling events (enabled / disabled).
+         * By default toggle-bool's events will not bubble. Set this attribute if you need bubbling events (enabled / disabled).
          */
         bubbles:{type:Boolean, value:false},
       }
@@ -71,6 +71,6 @@
     }
   }
 
-  window.customElements.define(ToggleVar.is, ToggleVar);
+  window.customElements.define(ToggleBool.is, ToggleBool);
 
 </script>
