@@ -17,7 +17,11 @@
             return 'de-bounce';
         }
         static get properties() {
-            return {}
+            return {/**
+               * Delay duration in ms
+               */
+              duration: {type: Number, value: 250,},
+            }
         }
     }
 

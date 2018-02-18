@@ -1,35 +1,37 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
 <script>
-    /**
-     * `event-gate`
-     * 
-     *
-     * @customElement
-     * @polymer
-     */
-    class EventGate extends (Polymer.Element) {
-        constructor() {
-            super();       
-        }
+  /**
+   * `event-gate` forwards an event when `gate` is open.
+   *
+   *  <event-gate open="[[isOpen]]" ƒ-trigger="--something-clicked" @-triggered="--click-event-passed"></event-gate>
+   *
+   * @customElement
+   * @polymer
+   */
+  class EventGate extends (Polymer.Element) {
+    constructor() {
+      super();
+    }
 
-        static get is() {
-            return 'event-gate';
-        }
-        static get properties() {
-            return {
-              bubbles:Boolean,
-              pass:Boolean,
-              block:Boolean
-            }
-        }
+    static get is() {
+      return 'event-gate';
+    }
 
-        trigger(e){
-
-
+    static get properties() {
+      return {
+        bubbles: Boolean,
+        open: Boolean,
+        closed: Boolean
       }
     }
 
-    window.customElements.define(EventGate.is, EventGate);
+    trigger(e) {
+
+
+    }
+  }
+
+  window.customElements.define(EventGate.is, EventGate);
 
 </script>
