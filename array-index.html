@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+
+<script>
+    /**
+     * `array-index`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ArrayIndex extends Polymer.Element {
+        static get is() {
+            return 'array-index';
+        }
+
+        static get observers() {
+            return ['_indexChanged(index,array)'];
+        }
+
+        static get properties() {
+            return {
+                /**
+                 * aktueller Index
+                 */
+                index: {type: Number, notify: true},
+                /**
+                 * Input Array
+                 */
+                array: {type: Array},
+                /**
+                 * Referenz auf das gewählte Item aus array.
+                 *
+                 * => array[index]
+                 */
+                selectedItem: {type: Object, notify: true},
+                /**
+                 * Path des Wertes im einzelnen Objekt
+                 */
+                path: {type: String},
+                /**
+                 * Alternativer Path der für das resolven verwendet wird
+                 */
+                resolvePath: {type: String},
+                /**
+                 * Wert aus array[index].path  (deep)
+                 */
+                pathValue: {type: String, notify: true},
+            };
+        }
+
+        /*
+         * index mit resolvePath oder path durch objekt aus dem Array ermitteln
+         * und setzen von index und selectedItem
+         * @param data Object
+         */
+        resolve(data) {
+            let resolvePath = this.resolvePath || this.path;
+            let path = this.path;
+            let searchForValue = Polymer.Path.get(data, resolvePath);
+            let newIndex = this.array.findIndex((i) => {
+                return Polymer.Path.get(i, path) === searchForValue;
+            });
+            if (newIndex !== -1) {
+                this.set('index', newIndex);
+            }
+        }
+
+        _indexChanged(index, array) {
+            if (index !== undefined && array) {
+                this.set('selectedItem', array[index]);
+                this.set('pathValue', Polymer.Path.get(array[index], this.path));
+            }
+        }
+    }
+
+    window.customElements.define(ArrayIndex.is, ArrayIndex);
+
+</script>
