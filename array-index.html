@@ -15,9 +15,6 @@
             return 'array-index';
         }
 
-        static get observers() {
-            return ['_indexChanged(index,array)'];
-        }
 
         static get properties() {
             return {
@@ -40,16 +37,33 @@
                  */
                 path: {type: String},
                 /**
-                 * Alternativer Path der für das resolven verwendet wird
+                 * Pfad im Suchobjekt der für das resolven verwendet wird
                  */
                 resolvePath: {type: String},
+              /**
+              * item
+              * Objekt das als sucher verwendet wird (gleich wie data aus resolve(data)
+              */
+              item : {
+                    type: Object
+              },
                 /**
                  * Wert aus array[index].path  (deep)
                  */
-                pathValue: {type: String, notify: true},
+                pathValue: {type: Object, notify: true},
             };
         }
 
+
+        static get observers() {
+            return ['_indexChanged(index,array)','_resolve(array,item)'];
+        }
+
+        _resolve(array,item){
+            if(array.length > 0 && item !== undefined){
+                this.resolve(item);
+            }
+        }
         /*
          * index mit resolvePath oder path durch objekt aus dem Array ermitteln
          * und setzen von index und selectedItem
