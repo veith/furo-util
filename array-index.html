@@ -83,7 +83,10 @@
 
         _indexChanged(index, array) {
             if (index !== undefined && array) {
+
+                if (this.selectedItem !== array[index]) {
                 this.set('selectedItem', array[index]);
+                }
                 this.set('pathValue', Polymer.Path.get(array[index], this.path));
             }
         }
