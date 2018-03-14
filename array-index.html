@@ -60,7 +60,7 @@
         }
 
         _resolve(array,item){
-            if(array.length > 0 && item !== undefined){
+            if(array && array.length > 0 && item !== undefined){
                 this.resolve(item);
             }
         }
