@@ -18,7 +18,7 @@
    *   </default-value>
    *
    * <!-- lazy loader -->
-   * <lazy-load element="[[page]]" pattern="/src/my-:element.html" @-error="--loadErrored">
+   * <lazy-load src="../my-component.html" @-error="--loadErrored">
    *   </lazy-load>
    *
    * <!-- load view404 if element was not found -->
@@ -43,20 +43,13 @@
     static get properties() {
       return {
         /**
-         * The element name to be loaded. Will be mixed with the pattern property.
+         * The element to be loaded.
          */
-        element: {
+        src: {
           type: String,
           observer: 'load',
         },
-        /**
-         * The pattern to be applied.
-         *
-         * `/src/my-:element.html` with element `viewHome` will load `/src/my-viewHome.html`
-         */
-        pattern: {
-          type: String,
-        },
+
       };
     }
 
@@ -66,9 +59,8 @@
      */
     load(element) {
       if (element !== undefined) {
-        let resolved = this.pattern.replace(':element', element);
         Polymer.importHref(
-            resolved,
+            element,
             this._loaded.bind(this),
             this._error.bind(this),
             true);
