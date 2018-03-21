@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+
+<script>
+  (() => {
+
+    let stateStore = {};
+
+    /**
+     * Mixin for a shared State accross the DOM
+     * @polymerMixin FuroStateMixin
+     */
+    FuroStateMixin = (superClass) => {
+      /**
+       * @polymerMixinClass
+       */
+      return class extends superClass {
+        // First consumer becomes master
+        constructor(stateName) {
+          super();
+          this._stateName = stateName;
+          if (!stateStore[stateName]) {
+            stateStore[stateName] = this;
+          }
+
+        }
+
+        static get properties() {
+          return {
+            /**
+             * The list of the consumers who will get notified.
+             * If master disconnects, the next consumer becomes master
+             */
+            _subscribers: {
+              type: Array,
+              value: () => []
+            },
+            /**
+             * Das gesamte config objekt
+             *
+             */
+            _state: {
+              type: Object
+            }
+          }
+        }
+
+        static get observers() {
+          return [
+            '_stateChanged(_state.*)'
+
+          ]
+        }
+
+
+        // registrierung der Empfänger
+        _register(subscriber) {
+          stateStore[this._stateName]._subscribers.push(subscriber);
+          //subscriber.set('_state', this._state);
+
+         // subscriber.notifyPath('_state');
+        }
+
+        _unregister(subscriber) {
+
+          stateStore[this._stateName]._subscribers.splice(stateStore[this._stateName]._subscribers.indexOf(subscriber), 1);
+          //delete when no subscribers are left
+          if(stateStore[this._stateName]._subscribers.length === 0){
+            stateStore[this._stateName] = null;
+          }
+
+        }
+
+        // benachrichtigen der subscriber
+        _stateChanged(change) {
+          for (let i = 0; i < stateStore[this._stateName]._subscribers.length; i++) {
+            //stateStore[this._stateName]._subscribers[i]._state = this._state;
+            console.log(this.id,change.path)
+            stateStore[this._stateName]._subscribers[i].notifyPath(change.path,change.value);
+          }
+        }
+
+
+        /**
+         * Registirierung
+         */
+        connectedCallback() {
+          super.connectedCallback();
+          stateStore[this._stateName]._register(this);
+        }
+
+        /**
+         * deregistrierung
+         * TODO: übergabe der Kontrolle an nächsten consumer => stateStore[this._stateName] an den zweiten subscriber geben
+         */
+        disconnectedCallback() {
+          super.disconnectedCallback();
+          stateStore[this._stateName]._unregister(this);
+        }
+      }
+    }
+  })();
+</script>
+

@@ -1,0 +1,50 @@
+<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="../state-mixin.html">
+
+<dom-module id="furo-state-consumer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    furo-state-consumer
+
+  </template>
+</dom-module>
+
+
+<script>
+  /**
+   * `furo-state-consumer`
+   *
+   *
+   * @customElement
+   * @polymer
+   * @mixes FuroStateMixin
+   */
+  class FuroStateConsumer extends FuroStateMixin(Polymer.Element) {
+    constructor() {
+       super('independentTestState');
+    }
+
+    static get is() {
+      return 'furo-state-consumer';
+    }
+
+    static get properties() {
+      return {};
+    }
+    static get observers() {
+      return ['_stateChange(_state.*)'];
+    }
+
+    _stateChange(change){
+      this.change = change;
+    }
+  }
+
+  window.customElements.define(FuroStateConsumer.is, FuroStateConsumer);
+
+</script>

@@ -1,0 +1,38 @@
+<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="../state-mixin.html">
+
+
+
+<script>
+  /**
+   * `furo-other-state-consumer`
+   *
+   *
+   * @customElement
+   * @polymer
+   * @mixes FuroStateMixin
+   */
+  class FuroOtherStateConsumer extends FuroStateMixin(Polymer.Element) {
+    constructor() {
+       super('secondTestState');
+    }
+
+    static get is() {
+      return 'furo-other-state-consumer';
+    }
+
+    static get properties() {
+      return {};
+    }
+    static get observers() {
+      return ['_stateChange(_state.*)'];
+    }
+
+    _stateChange(change){
+      this.change = change;
+    }
+  }
+
+  window.customElements.define(FuroOtherStateConsumer.is, FuroOtherStateConsumer);
+
+</script>

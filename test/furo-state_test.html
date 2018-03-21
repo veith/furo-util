@@ -1,0 +1,96 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>flowbased-polymer test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="furo-state-consumer.html">
+  <link rel="import" href="furo-other-state-consumer.html">
+</head>
+<body>
+
+<test-fixture id="first">
+  <template>
+    <furo-state-consumer id="f"></furo-state-consumer>
+  </template>
+</test-fixture>
+<test-fixture id="second">
+  <template>
+    <furo-state-consumer id="s"></furo-state-consumer>
+  </template>
+</test-fixture>
+<test-fixture id="third">
+  <template>
+    <furo-state-consumer id="t"></furo-state-consumer>
+  </template>
+</test-fixture>
+
+<test-fixture id="other">
+  <template>
+    <furo-other-state-consumer id="fo"></furo-other-state-consumer>
+  </template>
+</test-fixture>
+<test-fixture id="secondOther">
+  <template>
+    <furo-other-state-consumer id="so"></furo-other-state-consumer>
+  </template>
+</test-fixture>
+
+<script>
+  suite('toggle-bool', function () {
+    let first, second, third, secondOther,other;
+    setup(() => {
+      first = fixture('first');
+      second = fixture('second');
+      third = fixture('third');
+      secondOther = fixture('secondOther');
+      other = fixture('other');
+    });
+
+
+    test('should have one master', function () {
+
+      assert.equal(second._subscribers.length, 0);
+      assert.equal(first._subscribers.length, 3);
+
+    });
+
+    test('states should have no effect to other states ', () => {
+      third.set('_state', {'a': 8})
+      assert.equal(second._state.a, 8);
+      assert.equal(third._state.a, 8);
+    });
+
+
+    test('should have _state value from first on second ', () => {
+      first.set('_state', {'a': 9})
+      assert.equal(second._state.a, 9);
+      assert.equal(third._state.a, 9);
+    });
+
+    test('should have _state value from first on second ', () => {
+      third.set('_state', {'a': 8})
+      assert.equal(second._state.a, 8);
+      assert.equal(third._state.a, 8);
+    });
+
+    test('should notify partial changes ', () => {
+      third.set('_state', {'a': 8, 'c': {'d': undefined}})
+      second.set('_state.c.d', 5)
+      assert.equal(second._state.c.d, 5);
+      assert.equal(third._state.a, 8);
+      assert.equal(second.change.path, '_state.c.d');
+      assert.equal(first.change.path, '_state.c.d');
+      assert.equal(third.change.path, '_state.c.d');
+    });
+
+
+  });
+</script>
+</body>
+</html>
+
