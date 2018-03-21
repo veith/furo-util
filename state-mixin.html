@@ -21,6 +21,7 @@
           this._stateName = stateName;
           if (!stateStore[stateName]) {
             stateStore[stateName] = this;
+            stateStore[stateName]._isMaster = true;
           }
 
         }
@@ -45,39 +46,33 @@
           }
         }
 
-        static get observers() {
-          return [
-            '_stateChanged(_state.*)'
 
-          ]
+        // benachrichtigen der subscriber bei set von _state ohne sich im kreis zu drehen.
+        set(path, value) {
+          if (path.startsWith('_state')) {
+            Polymer.Path.set(stateStore[this._stateName], path, value);
+            for (let i = 0; i < stateStore[this._stateName]._subscribers.length; i++) {
+              stateStore[this._stateName]._subscribers[i].notifyPath(path, value);
+            }
+          } else {
+            super.set(path, value);
+          }
+
         }
-
 
         // registrierung der Empfänger
         _register(subscriber) {
-          stateStore[this._stateName]._subscribers.push(subscriber);
-          //subscriber.set('_state', this._state);
-
-         // subscriber.notifyPath('_state');
+          subscriber._stateIndex = stateStore[this._stateName]._subscribers.push(subscriber) - 1;
         }
 
         _unregister(subscriber) {
 
           stateStore[this._stateName]._subscribers.splice(stateStore[this._stateName]._subscribers.indexOf(subscriber), 1);
           //delete when no subscribers are left
-          if(stateStore[this._stateName]._subscribers.length === 0){
+          if (stateStore[this._stateName]._subscribers.length === 0) {
             stateStore[this._stateName] = null;
           }
 
-        }
-
-        // benachrichtigen der subscriber
-        _stateChanged(change) {
-          for (let i = 0; i < stateStore[this._stateName]._subscribers.length; i++) {
-            //stateStore[this._stateName]._subscribers[i]._state = this._state;
-            console.log(this.id,change.path)
-            stateStore[this._stateName]._subscribers[i].notifyPath(change.path,change.value);
-          }
         }
 
 
