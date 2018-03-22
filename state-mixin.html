@@ -7,7 +7,29 @@
     let stateStore = {};
 
     /**
-     * Mixin for a shared State accross the DOM
+     * Mixin for a shared State accross n components
+     *
+     * ## usage
+     *
+     * Apply the mixin to your components and give a unique name for your state.
+     * The state is available in the ._state property.
+     *
+     * ```
+     *   class FuroStateConsumer extends FuroStateMixin(Polymer.Element) {
+     *
+     *     constructor() {
+     *       super('shared-config');
+     *     }
+     *
+     *     // _state.config.foo is shared accros every plugin with
+     *     // FuroStateMixin which registers to shared-config
+     *     someMethod(bar){
+     *       this.set('_state.config.foo',bar);
+     *     }
+     *
+     *
+     * ```
+     *
      * @polymerMixin FuroStateMixin
      */
     FuroStateMixin = (superClass) => {
@@ -35,8 +57,7 @@
               value: () => []
             },
             /**
-             * Das gesamte config objekt
-             *
+             * The shared state
              */
             _state: {
               type: Object,
@@ -48,7 +69,10 @@
         }
 
 
-        // benachrichtigen der subscriber bei set von _state ohne sich im kreis zu drehen.
+        /**
+         * avoid circular notifications for _state. Every property which is not _state will be forwardet to the
+         * built in set() method.
+         */
         set(path, value) {
           if (path.startsWith('_state')) {
             let parts = path.split('.');
@@ -93,7 +117,7 @@
         }
 
         /**
-         * Registirierung
+         * registration
          */
         connectedCallback() {
           super.connectedCallback();
@@ -101,8 +125,7 @@
         }
 
         /**
-         * deregistrierung
-         * TODO: übergabe der Kontrolle an nächsten consumer => stateStore[this._stateName] an den zweiten subscriber geben
+         * deregistration
          */
         disconnectedCallback() {
           super.disconnectedCallback();
