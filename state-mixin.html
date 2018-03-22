@@ -21,9 +21,7 @@
           this._stateName = stateName;
           if (!stateStore[stateName]) {
             stateStore[stateName] = this;
-            stateStore[stateName]._isMaster = true;
           }
-
         }
 
         static get properties() {
@@ -41,7 +39,10 @@
              *
              */
             _state: {
-              type: Object
+              type: Object,
+              value: () => {
+                return {}
+              }
             }
           }
         }
@@ -50,6 +51,10 @@
         // benachrichtigen der subscriber bei set von _state ohne sich im kreis zu drehen.
         set(path, value) {
           if (path.startsWith('_state')) {
+            let parts = path.split('.');
+            if (parts.length > 1) {
+              this.__appendPart(stateStore[this._stateName], parts)
+            }
             Polymer.Path.set(stateStore[this._stateName], path, value);
             for (let i = 0; i < stateStore[this._stateName]._subscribers.length; i++) {
               stateStore[this._stateName]._subscribers[i].notifyPath(path, value);
@@ -57,7 +62,21 @@
           } else {
             super.set(path, value);
           }
+        }
 
+        /**
+         * Create deep Objects for non existing path in object.
+         */
+        __appendPart(target, parts) {
+          let part = parts.shift();
+          // create segment if it does not exist
+          if (target[part] === undefined) {
+            target[part] = {};
+          }
+          // append the tail
+          if (parts.length > 1) {
+            this.__appendPart(target[part], parts)
+          }
         }
 
         // registrierung der Empfänger
@@ -66,15 +85,12 @@
         }
 
         _unregister(subscriber) {
-
           stateStore[this._stateName]._subscribers.splice(stateStore[this._stateName]._subscribers.indexOf(subscriber), 1);
           //delete when no subscribers are left
           if (stateStore[this._stateName]._subscribers.length === 0) {
             stateStore[this._stateName] = null;
           }
-
         }
-
 
         /**
          * Registirierung
@@ -91,6 +107,7 @@
         disconnectedCallback() {
           super.disconnectedCallback();
           stateStore[this._stateName]._unregister(this);
+
         }
       }
     }

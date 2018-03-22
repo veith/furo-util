@@ -15,7 +15,9 @@
 
 <test-fixture id="first">
   <template>
+
     <furo-state-consumer id="f"></furo-state-consumer>
+
   </template>
 </test-fixture>
 <test-fixture id="second">
@@ -48,9 +50,10 @@
 
 <script>
   suite('toggle-bool', function () {
-    let first, second, third, secondOther,other,viert;
+    let first, second, third, secondOther, other, viert;
     setup(() => {
       first = fixture('first');
+
       second = fixture('second');
       third = fixture('third');
       viert = fixture('viert');
@@ -86,7 +89,7 @@
     });
 
     test('should notify partial changes ', () => {
-      first.set('_state',{'a': 8, 'c': {'d': undefined}});
+      first.set('_state', {'a': 8, 'c': {'d': undefined}});
       second.set('_state.c.d', 1);
       second.set('_state.c.d', 15);
       assert.equal(first._state.c.d, 15);
@@ -95,11 +98,24 @@
       assert.equal(viert._state.c.d, 15);
       assert.equal(third._state.a, 8);
 
-        assert.equal(second.change.path, '_state.c.d');
-        assert.equal(third.change.path, '_state.c.d');
-        assert.equal(first.change.path, '_state.c.d');
-        assert.equal(viert.change.path, '_state.c.d');
+      assert.equal(second.change.path, '_state.c.d');
+      assert.equal(third.change.path, '_state.c.d');
+      assert.equal(first.change.path, '_state.c.d');
+      assert.equal(viert.change.path, '_state.c.d');
 
+    });
+
+    test('should work when first controller is removed ', () => {
+      third.set('_state', {'a': 8})
+      assert.equal(second._state.a, 8);
+      assert.equal(third._state.a, 8);
+      second.set('_state.b', 2);
+      assert.equal(third._state.b, 2);
+      first.remove(first);
+      first = null;
+      second.set('_state.d.e.f', 3);
+      assert.equal(second._state.d.e.f, 3);
+      assert.equal(third._state.d.e.f, 3);
     });
 
 
