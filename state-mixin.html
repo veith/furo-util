@@ -15,6 +15,7 @@
      * The state is available in the ._state property.
      *
      * ```
+     *
      *   class FuroStateConsumer extends FuroStateMixin(Polymer.Element) {
      *
      *     constructor() {
@@ -106,6 +107,7 @@
         // registrierung der Empfänger
         _register(subscriber) {
           subscriber._stateIndex = stateStore[this._stateName]._subscribers.push(subscriber) - 1;
+            subscriber._state = this._state;
         }
 
         _unregister(subscriber) {
