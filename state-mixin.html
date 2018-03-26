@@ -75,7 +75,7 @@
          * built in set() method.
          */
         set(path, value) {
-          if (path.startsWith('_state')) {
+          if (path.startsWith('_state') && stateStore[this._stateName] !== null) {
             let parts = path.split('.');
             if (parts.length > 1) {
               this.__appendPart(stateStore[this._stateName], parts)
@@ -107,7 +107,7 @@
         // registrierung der Empfänger
         _register(subscriber) {
           subscriber._stateIndex = stateStore[this._stateName]._subscribers.push(subscriber) - 1;
-            subscriber._state = this._state;
+          subscriber._state = this._state;
         }
 
         _unregister(subscriber) {
