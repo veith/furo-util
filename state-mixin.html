@@ -71,10 +71,13 @@
 
 
         /**
-         * avoid circular notifications for _state. Every property which is not _state will be forwardet to the
-         * built in set() method.
+         * Set the _state.
+         * All subscribes will be notified.
+         *
+         * @param path {String} the path (begins with _state)
+         * @param value {*} the value to set
          */
-        set(path, value) {
+        _setState(path, value) {
           if (path.startsWith('_state') && stateStore[this._stateName] !== null) {
             let parts = path.split('.');
             if (parts.length > 1) {
@@ -84,8 +87,6 @@
             for (let i = 0; i < stateStore[this._stateName]._subscribers.length; i++) {
               stateStore[this._stateName]._subscribers[i].notifyPath(path, value);
             }
-          } else {
-            super.set(path, value);
           }
         }
 

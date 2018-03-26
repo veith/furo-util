@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>flowbased-polymer test</title>
-  <meta charset="utf-8">
+  <meta char_setState="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../../web-component-tester/browser.js"></script>
@@ -70,28 +70,28 @@
     });
 
     test('states should have no effect to other states ', () => {
-      first.set('_state', {'a': 8})
+      first._setState('_state', {'a': 8})
       assert.equal(second._state.a, 8);
       assert.equal(third._state.a, 8);
     });
 
 
     test('should have _state value from first on second ', () => {
-      second.set('_state', {'a': 9})
+      second._setState('_state', {'a': 9})
       assert.equal(first._state.a, 9);
       assert.equal(third._state.a, 9);
     });
 
     test('should have _state value from first on second ', () => {
-      third.set('_state', {'a': 8})
+      third._setState('_state', {'a': 8})
       assert.equal(second._state.a, 8);
       assert.equal(third._state.a, 8);
     });
 
     test('should notify partial changes ', () => {
-      first.set('_state', {'a': 8, 'c': {'d': undefined}});
-      second.set('_state.c.d', 1);
-      second.set('_state.c.d', 15);
+      first._setState('_state', {'a': 8, 'c': {'d': undefined}});
+      second._setState('_state.c.d', 1);
+      second._setState('_state.c.d', 15);
       assert.equal(first._state.c.d, 15);
       assert.equal(second._state.c.d, 15);
       assert.equal(third._state.c.d, 15);
@@ -106,14 +106,14 @@
     });
 
     test('should work when first controller is removed ', () => {
-      third.set('_state', {'a': 8})
+      third._setState('_state', {'a': 8})
       assert.equal(second._state.a, 8);
       assert.equal(third._state.a, 8);
-      second.set('_state.b', 2);
+      second._setState('_state.b', 2);
       assert.equal(third._state.b, 2);
       first.remove(first);
       first = null;
-      second.set('_state.d.e.f', 3);
+      second._setState('_state.d.e.f', 3);
       assert.equal(second._state.d.e.f, 3);
       assert.equal(third._state.d.e.f, 3);
     });
