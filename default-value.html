@@ -42,12 +42,20 @@
       };
     }
 
+    /**
+     * Sets the default value to output
+     */
     setDefault() {
       this.set('output', this.defaultValue);
     }
 
+    /**
+     * set output value with default or input value if defined
+     * @param input
+     * @private
+     */
     _setOut(input) {
-      if (!input) {
+      if (!this.input) {
         this.set('output', this.defaultValue);
       } else {
         this.set('output', input);

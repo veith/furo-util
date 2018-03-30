@@ -1,9 +1,11 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <script>
   /**
-   * `toggle-bool` toggles a boolean value.
+   * `toggle-bool` toggles a boolean value from true to false to true...
    *
-   *        <toggle-bool ƒ-toggle="--menuClicked" value="{{narrow}}"></toggle-bool>
+   *```
+   *   <toggle-bool ƒ-toggle="--menuClicked" value="{{narrow}}"></toggle-bool>
+   *```
    *
    * @customElement
    * @polymer
@@ -44,9 +46,14 @@
 
     }
 
-    _changeEmitter(b) {
-      if (b !== undefined) {
-        if (b) {
+    /**
+     * notify about changes
+     * @param value
+     * @private
+     */
+    _changeEmitter(value) {
+
+        if (value) {
           /**
            * @event value-enabled
            *
@@ -68,7 +75,7 @@
           this.dispatchEvent(customEvent)
         }
       }
-    }
+
   }
 
   window.customElements.define(ToggleBool.is, ToggleBool);

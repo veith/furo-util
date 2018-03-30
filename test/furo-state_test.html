@@ -117,6 +117,15 @@
       assert.equal(second._state.d.e.f, 3);
       assert.equal(third._state.d.e.f, 3);
     });
+  test('set other value then _state should have no effekt ', () => {
+      third._setState('_state', {'a': 8})
+    second._setState('_sssstate.b', 2);
+    assert.equal(second._state.a, 8);
+    assert.equal(third._state.a, 8);
+    second._setState('_state.b', 2);
+    assert.equal(third._state.b, 2);
+
+    });
 
 
   });

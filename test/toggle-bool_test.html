@@ -39,16 +39,11 @@
 
     test('enable', function (done) {
       var element = fixture('enable');
-
       element.addEventListener('value-enabled',(e)=>{
         assert.equal(e.detail, 7);
         done()
       });
-
-
       element.toggle(7);
-
-
     });
 
 

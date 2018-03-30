@@ -18,6 +18,12 @@
   </template>
 </test-fixture>
 
+<test-fixture id="noinput">
+  <template>
+    <default-value></default-value>
+  </template>
+</test-fixture>
+
 
 <script>
   suite('default-value', function () {
@@ -38,7 +44,17 @@
     test('with input is set, should give the input value as output', function () {
       var element = fixture('basic');
       element.set('input', 'input is set');
+
       assert.equal(element.output, 'input is set');
+    });
+
+    test('with input is NOT set, should give the input value as output', function () {
+      var element = fixture('noinput');
+      element.defaultValue = 'default';
+
+      element.setDefault();
+      assert.equal(element.input, undefined);
+      assert.equal(element.output, 'default');
     });
 
 
