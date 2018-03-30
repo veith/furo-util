@@ -20688,6 +20688,334 @@
       "tagname": "merge-object"
     },
     {
+      "description": "`shared-config`",
+      "summary": "",
+      "path": "shared-config.html",
+      "properties": [
+        {
+          "name": "_subscribers",
+          "type": "Array",
+          "description": "The list of the consumers who will get notified.\nIf master disconnects, the next consumer becomes master",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 58,
+              "column": 12
+            },
+            "end": {
+              "line": 61,
+              "column": 13
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "[]",
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "_state",
+          "type": "Object",
+          "description": "The shared state",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 65,
+              "column": 12
+            },
+            "end": {
+              "line": 70,
+              "column": 13
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "{}",
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "config",
+          "type": "Object",
+          "description": "config\nThe configuration which is in the section define in `section`",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 28,
+              "column": 10
+            },
+            "end": {
+              "line": 32,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true,
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "section",
+          "type": "string",
+          "description": "section\nThe desired section of the config",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 37,
+              "column": 10
+            },
+            "end": {
+              "line": 39,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "_setState",
+          "description": "Set the _state.\nAll subscribes will be notified.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 82,
+              "column": 8
+            },
+            "end": {
+              "line": 93,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "path",
+              "description": "{String} the path (begins with _state)"
+            },
+            {
+              "name": "value",
+              "description": "{*} the value to set"
+            }
+          ],
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "__appendPart",
+          "description": "Create deep Objects for non existing path in object.",
+          "privacy": "private",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 98,
+              "column": 8
+            },
+            "end": {
+              "line": 108,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "target"
+            },
+            {
+              "name": "parts"
+            }
+          ],
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "_register",
+          "description": "registrierung der Empfänger",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 111,
+              "column": 8
+            },
+            "end": {
+              "line": 114,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "subscriber"
+            }
+          ],
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "_unregister",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 116,
+              "column": 8
+            },
+            "end": {
+              "line": 122,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "subscriber"
+            }
+          ],
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "connectedCallback",
+          "description": "registration",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 127,
+              "column": 8
+            },
+            "end": {
+              "line": 130,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "disconnectedCallback",
+          "description": "deregistration",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "state-mixin.html",
+            "start": {
+              "line": 135,
+              "column": 8
+            },
+            "end": {
+              "line": 139,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "inheritedFrom": "FuroStateMixin"
+        },
+        {
+          "name": "_notify",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 48,
+              "column": 6
+            },
+            "end": {
+              "line": 52,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "_state"
+            },
+            {
+              "name": "section"
+            }
+          ]
+        }
+      ],
+      "staticMethods": [],
+      "demos": [
+        {
+          "url": "demo/shared-config_demo.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 54,
+          "column": 5
+        }
+      },
+      "privacy": "public",
+      "superclass": "HTMLElement",
+      "name": "SharedConfig",
+      "attributes": [
+        {
+          "name": "config",
+          "description": "config\nThe configuration which is in the section define in `section`",
+          "sourceRange": {
+            "start": {
+              "line": 28,
+              "column": 10
+            },
+            "end": {
+              "line": 32,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "Object"
+        },
+        {
+          "name": "section",
+          "description": "section\nThe desired section of the config",
+          "sourceRange": {
+            "start": {
+              "line": 37,
+              "column": 10
+            },
+            "end": {
+              "line": 39,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "string"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "config-changed",
+          "description": "Fired when the `config` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "shared-config",
+      "mixins": [
+        "FuroStateMixin"
+      ]
+    },
+    {
       "description": "`stream-count`  is an element to count something\n\n```\n   <stream-count ƒ-count=\"--event\" @-tick=\"--countedClicks\" counter=\"{{sum}}\"></stream-count>\n```",
       "summary": "",
       "path": "stream-count.html",
@@ -30804,7 +31132,7 @@
   ],
   "mixins": [
     {
-      "description": "Mixin for a shared State accross n components\n\n## usage\n\nApply the mixin to your components and give a unique name for your state.\nThe state is available in the ._state property.\n\n```\n  class FuroStateConsumer extends FuroStateMixin(Polymer.Element) {\n\n    constructor() {\n      super('shared-config');\n    }\n\n    // _state.config.foo is shared accros every plugin with\n    // FuroStateMixin which registers to shared-config\n    someMethod(bar){\n      this.set('_state.config.foo',bar);\n    }\n\n\n```",
+      "description": "Mixin for a shared State accross n components\n\n## usage\n\nApply the mixin to your components and give a unique name for your state.\nThe state is available in the ._state property.\n\n```\n\n  class FuroStateConsumer extends FuroStateMixin(Polymer.Element) {\n\n    constructor() {\n      super('shared-config');\n    }\n\n    // _state.config.foo is shared accros every plugin with\n    // FuroStateMixin which registers to shared-config\n    someMethod(bar){\n      this.set('_state.config.foo',bar);\n    }\n\n\n```\n### Attention\n Do not set _state directly. Use the `_setState` method, otherwise the notifiers will not be notified.\n This is done by intention.",
       "summary": "",
       "path": "state-mixin.html",
       "properties": [
@@ -30815,11 +31143,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 54,
+              "line": 58,
               "column": 12
             },
             "end": {
-              "line": 57,
+              "line": 61,
               "column": 13
             }
           },
@@ -30835,11 +31163,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 61,
+              "line": 65,
               "column": 12
             },
             "end": {
-              "line": 66,
+              "line": 70,
               "column": 13
             }
           },
@@ -30851,26 +31179,28 @@
       ],
       "methods": [
         {
-          "name": "set",
-          "description": "avoid circular notifications for _state. Every property which is not _state will be forwardet to the\nbuilt in set() method.",
-          "privacy": "public",
+          "name": "_setState",
+          "description": "Set the _state.\nAll subscribes will be notified.",
+          "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 75,
+              "line": 82,
               "column": 8
             },
             "end": {
-              "line": 88,
+              "line": 93,
               "column": 9
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "path"
+              "name": "path",
+              "description": "{String} the path (begins with _state)"
             },
             {
-              "name": "value"
+              "name": "value",
+              "description": "{*} the value to set"
             }
           ]
         },
@@ -30880,11 +31210,11 @@
           "privacy": "private",
           "sourceRange": {
             "start": {
-              "line": 93,
+              "line": 98,
               "column": 8
             },
             "end": {
-              "line": 103,
+              "line": 108,
               "column": 9
             }
           },
@@ -30904,11 +31234,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 106,
+              "line": 111,
               "column": 8
             },
             "end": {
-              "line": 108,
+              "line": 114,
               "column": 9
             }
           },
@@ -30925,11 +31255,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 110,
+              "line": 116,
               "column": 8
             },
             "end": {
-              "line": 116,
+              "line": 122,
               "column": 9
             }
           },
@@ -30946,11 +31276,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 121,
+              "line": 127,
               "column": 8
             },
             "end": {
-              "line": 124,
+              "line": 130,
               "column": 9
             }
           },
@@ -30963,11 +31293,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 129,
+              "line": 135,
               "column": 8
             },
             "end": {
-              "line": 133,
+              "line": 139,
               "column": 9
             }
           },
@@ -30980,11 +31310,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 34,
+          "line": 38,
           "column": 4
         },
         "end": {
-          "line": 135,
+          "line": 141,
           "column": 5
         }
       },

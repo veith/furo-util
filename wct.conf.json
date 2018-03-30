@@ -1,0 +1,40 @@
+{
+    "suites": [
+        "test/*_test.html"
+    ],
+    "verbose": true,
+    "plugins": {
+        "istanbul": {
+            "dir": "./coverage",
+            "reporters": [
+                "text-summary",
+                "lcov"
+            ],
+            "include": [
+                "/de-bounce.html",
+                "/lazy-load.html",
+                "/state-mixin.html",
+                "/default-value.html",
+                "/toggle-bool.html"
+            ],
+            "exclude": [],
+            "thresholds": {
+                "global": {
+                    "statements": 82,
+                    "branches": 76,
+                    "functions": 82,
+                    "lines": 82
+                }
+            }
+        },
+        "test-reporter": {
+            "reporter": "json",
+            "output": "test_result.json"
+        },
+        "local": {
+            "browsers": [
+                "chrome"
+            ]
+        }
+    }
+}

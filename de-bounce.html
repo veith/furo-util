@@ -1,30 +1,80 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
 <script>
-    /**
-     * `de-bounce` is a declarative debouncer.
-     *
-     *
-     * @customElement
-     * @polymer
-     */
-    class DeBounce extends (Polymer.Element) {
-        constructor() {
-            super();
-        }
-
-        static get is() {
-            return 'de-bounce';
-        }
-        static get properties() {
-            return {/**
-               * Delay duration in ms
-               */
-              duration: {type: Number, value: 250,},
-            }
-        }
+  /**
+   * `de-bounce` is a declarative debouncer.
+   *
+   *
+   *
+   * @customElement
+   * @polymer
+   */
+  class DeBounce extends (Polymer.Element) {
+    constructor() {
+      super();
+      this._timeout = null;
+      this._data = undefined;
     }
 
-    window.customElements.define(DeBounce.is, DeBounce);
+    static get is() {
+      return 'de-bounce';
+    }
+
+    static get properties() {
+      return {
+        /**
+         * Delay duration in ms. Default is 250ms
+         *
+         */
+        duration: {type: Number, value: 250,},
+        /**
+         *  If `immediate` is true, trigger the function on the
+         *  leading edge, instead of the trailing.
+         */
+        immediate: {type: Boolean, value: false},
+        bubbles: {type: Boolean, value: false}
+      }
+    }
+
+    /**
+     * Trigger the debouncer. If immediate is true, the data of the first call is sent,
+     * otherwise the data of the last call is used.
+     * @param data
+     */
+    pulse(data) {
+
+      this._data = data;
+      if (this._timeout === null) {
+        if (this.immediate === false) {
+          this._timeout = setTimeout(() => {
+            this.__fire();
+            clearTimeout(this._timeout);
+            this._timeout = null;
+          }, this.duration)
+        } else {
+          // fire immediatly
+          this.__fire();
+          this._timeout = setTimeout(() => {
+            clearTimeout(this._timeout);
+            this._timeout = null;
+          }, this.duration)
+        }
+      }
+    }
+
+    __fire() {
+      /**
+       * @event triggered
+       * Fired when debounce triggers. If immediate is true,
+       * this event will be fired at the beginning and suppress the other pulses
+       * detail payload: {*} data that was passed in to the pulse function
+       */
+      let customEvent = new Event('triggered', {composed: true, bubbles: this.bubbles});
+      customEvent.detail = this._data;
+      this.dispatchEvent(customEvent);
+    }
+  }
+
+  window.customElements.define(DeBounce.is, DeBounce);
 
 </script>

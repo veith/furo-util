@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>shared-config</title>
+
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../de-bounce.html">
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <de-bounce></de-bounce>
+  </template>
+</test-fixture>
+
+<script>
+  suite('shared-config', () => {
+    let debouncer;
+    setup(() => {
+      debouncer = fixture('basic');
+    });
+    test('instantiating the element', () => {
+      assert.equal(debouncer.nodeName, 'DE-BOUNCE');
+    });
+
+    test('pulse should fire the triggered event after 250ms', (done) => {
+
+
+      let handler = (e) => {
+        let endTime = new Date();
+        assert.equal(e.detail, 'data2');
+        expect(endTime - startTime).to.gte(250);
+        done()
+      };
+      debouncer.addEventListener('triggered', handler);
+      let startTime = new Date();
+      debouncer.pulse('data1');
+      debouncer.pulse('data11');
+      debouncer.pulse('data12');
+      debouncer.pulse('data13');
+      debouncer.pulse('data2');
+    });
+
+    test('pulse should fire immediate and ignore next pulses for 250ms', (done) => {
+
+      debouncer.immediate = true;
+      let handler = (e) => {
+        let endTime = new Date();
+        assert.equal(e.detail, 'data1');
+        expect(endTime - startTime).to.lte(50);
+        done()
+      };
+      debouncer.addEventListener('triggered', handler);
+      let startTime = new Date();
+      debouncer.pulse('data1');
+      debouncer.pulse('data11');
+      debouncer.pulse('data12');
+      debouncer.pulse('data13');
+      debouncer.pulse('data2');
+    });
+
+    test('pulse should ignore following pulses for immediate  for the next for 250ms', (done) => {
+
+      debouncer.immediate = true;
+      let handler = (e) => {
+        if(e.detail === 'next'){
+          let endTime = new Date();
+          assert.equal(e.detail, 'next');
+          expect(endTime - startTime).to.gte(250);
+          done()
+        }
+
+      };
+      debouncer.addEventListener('triggered', handler);
+      let startTime = new Date();
+      debouncer.pulse('data1');
+      debouncer.pulse('data11');
+      debouncer.pulse('data12');
+      debouncer.pulse('data13');
+      debouncer.pulse('data2');
+      setTimeout(()=>{
+        debouncer.pulse('next');
+      },300)
+    });
+
+
+  });
+</script>
+
+</body>
+</html>
