@@ -47,6 +47,23 @@
       debouncer.pulse('data2');
     });
 
+    test('is working should be true for debounce duration when debouncing is in progress for  250ms', (done) => {
+
+      assert.equal(debouncer.working, false);
+      let handler = (e) => {
+        let endTime = new Date();
+        assert.equal(e.detail, 'data2');
+        expect(endTime - startTime).to.gte(250);
+        assert.equal(debouncer.working, false);
+        done()
+      };
+      debouncer.addEventListener('triggered', handler);
+      let startTime = new Date();
+      debouncer.pulse('data1');
+      debouncer.pulse('data2');
+      assert.equal(debouncer.working, true);
+    });
+
     test('pulse should fire immediate and ignore next pulses for 250ms', (done) => {
 
       debouncer.immediate = true;
@@ -75,7 +92,6 @@
           expect(endTime - startTime).to.gte(250);
           done()
         }
-
       };
       debouncer.addEventListener('triggered', handler);
       let startTime = new Date();
@@ -88,6 +104,7 @@
         debouncer.pulse('next');
       },300)
     });
+
 
 
   });

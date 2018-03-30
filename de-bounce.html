@@ -4,7 +4,9 @@
   /**
    * `de-bounce` is a declarative debouncer.
    *
-   *
+   * ```
+   * <de-bounce ƒ-pulse="--clicked" @-triggered="--debounced"></de-bounce>
+   * ```
    *
    * @customElement
    * @polymer
@@ -32,7 +34,14 @@
          *  leading edge, instead of the trailing.
          */
         immediate: {type: Boolean, value: false},
-        bubbles: {type: Boolean, value: false}
+        /**
+         * Set to true if you want the event bubbling
+         */
+        bubbles: {type: Boolean, value: false},
+        /**
+         * Indikator to see if debouncing is in progress
+         */
+        working: {type: Boolean, value: false, readOnly: true, notify: true}
       }
     }
 
@@ -44,6 +53,7 @@
     pulse(data) {
 
       this._data = data;
+      this._setWorking(true);
       if (this._timeout === null) {
         if (this.immediate === false) {
           this._timeout = setTimeout(() => {
@@ -71,6 +81,7 @@
        */
       let customEvent = new Event('triggered', {composed: true, bubbles: this.bubbles});
       customEvent.detail = this._data;
+      this._setWorking(false);
       this.dispatchEvent(customEvent);
     }
   }
