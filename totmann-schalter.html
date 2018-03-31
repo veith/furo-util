@@ -1,0 +1,166 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../flowbased-polymer/mixin.html">
+
+<link rel="import" href="de-bounce.html">
+
+<dom-module id="totmann-schalter">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+
+    <de-bounce ƒ-pulse="--switchActivated" ƒ-cancel="--switchDisabled,--signalReceived" duration="[[greenPhaseDuration]]" on-triggered="_greenCompleted" @-triggered="--greenCompleted"></de-bounce>
+    <de-bounce ƒ-pulse="--greenCompleted" ƒ-cancel="--switchDisabled,--signalReceived"  duration="[[orangePhaseDuration]]" on-triggered="_orangeCompleted" @-triggered="^alert,^red-phase-activated(lastSignalData)"></de-bounce>
+
+  </template>
+</dom-module>
+
+<script>
+  /**
+   * `totmann-schalter`
+   *
+   *  A dead man's switch is a switch that is automatically operated if the human operator becomes incapacitated,
+   *  such as through death, loss of consciousness, or being bodily removed from control.
+   *  Originally applied to switches on a vehicle or machine, it has since come to be used to describe other
+   *  intangible uses like in computer software.
+   *
+   *  These switches are usually used as a form of fail-safe where they stop a machine with no operator from
+   *  potentially dangerous action or incapacitate a device as a result of accident, malfunction, or misuse.
+   *  They are common in such applications in locomotives, aircraft refuelling, freight elevators, lawn mowers,
+   *  tractors, personal watercraft, outboard motors, chainsaws, snowblowers, tread machines, snowmobiles,
+   *  amusement rides, and many medical imaging devices. On some machines, these switches merely bring the machines
+   *  back to a safe state, such as reducing the throttle to idle or applying brakes while leaving the machines still
+   *  running and ready to resume normal operation once control is reestablished.
+   *  [Wikipedia](https://en.wikipedia.org/wiki/Dead_man%27s_switch)
+   *
+   *
+   *
+   * @customElement
+   * @demo demo/totmann-schalter_demo.html
+   * @mixes FBPMixin
+   * @polymer
+   */
+
+    class TotmannSchalter extends FBPMixin(Polymer.Element) {
+
+    constructor() {
+      super();
+    }
+
+    static get is() {
+      return 'totmann-schalter';
+    }
+
+    static get properties() {
+      return {
+        /**
+         * Duration of the green phase in ms.
+         *
+         * Default is 30s.
+         */
+        greenPhaseDuration: {type: Number, value: 30000},
+        /**
+         * Duration of the orange phase in ms.
+         *
+         * Default is 10s.
+         */
+        orangePhaseDuration: {type: Number, value: 10000},
+        /**
+         * Data of the last signal.
+         */
+        lastSignalData: {type: Object, notify: true, readOnly: true},
+        /**
+         * Is the switch active? Set to true or use the activate method to activate the totmann-schalter.
+         *
+         * Set to false or use the deactivate method to deactivate the totmann-schalter.
+         *
+         */
+        active: {type: Boolean, value: false, observer: '_activateObserver', notify: true},
+        /**
+         * Indicates that we are in the green phase
+         */
+        green: {type: Boolean, value: false, readOnly:true, notify: true, reflectToAttribute:true},
+        /**
+         * Indicates that we are in the orange phase
+         */
+        orange: {type: Boolean, value: false, readOnly:true, notify: true, reflectToAttribute:true},
+        /**
+         * Indicates that we are in the red phase
+         */
+        red: {type: Boolean, value: false, readOnly:true, notify: true, reflectToAttribute:true},
+
+      }
+    }
+    _activateObserver(active){
+      if(active){
+        this._setGreen(true);
+        /**
+        * @event green-phase-activated
+        * Fired when the green phase is activated
+         *
+        * detail payload: last signal data
+        */
+        let customEvent = new Event('green-phase-activated', {composed:true, bubbles: false});
+        customEvent.detail = this.lastSignalData;
+        this.dispatchEvent(customEvent);
+
+        this._FBPTriggerWire('--switchActivated');
+      }else{
+        this._FBPTriggerWire('--switchDisabled');
+      }
+    }
+
+    /**
+     * green phase is completed
+     */
+    _greenCompleted(){
+      this._setGreen(false);
+      this._setOrange(true);
+
+      /**
+       * @event orange-phase-activated
+       * Fired when the green phase is activated
+       *
+       * detail payload: last signal data
+       */
+      let customEvent = new Event('orange-phase-activated', {composed:true, bubbles: false});
+      customEvent.detail = this.lastSignalData;
+      this.dispatchEvent(customEvent);
+    }
+    
+    
+    /**
+     * orange phase is completed
+     */
+    _orangeCompleted(){
+      this._setOrange(false);
+      this._setRed(true);
+
+      /**
+       * @event red-phase-activated
+       * Fired when the orange phase is activated
+       *
+       * detail payload: last signal data
+       */
+      let customEvent = new Event('red-phase-activated', {composed:true, bubbles: false});
+      customEvent.detail = this.lastSignalData;
+      this.dispatchEvent(customEvent);
+    }
+    
+    
+    /**
+     * Your signal to show, that you are alife
+     *
+     * If signal is not called in the defined times, the `alert` event will be triggered
+     */
+    signal(data) {
+      this.lastSignalData = data;
+      this._FBPTriggerWire('--signalReceived')
+    }
+  }
+
+  window.customElements.define(TotmannSchalter.is, TotmannSchalter);
+
+</script>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>shared-config</title>
+
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../totmann-schalter.html">
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <totmann-schalter></totmann-schalter>
+  </template>
+</test-fixture>
+
+<script>
+  suite('shared-config', () => {
+
+    let schalter;
+    setup(() => {
+      schalter = fixture('basic');
+    });
+
+    test('instantiating the element', () => {
+
+      assert.equal(schalter.nodeName, 'TOTMANN-SCHALTER');
+    });
+
+    test('schalter should be in green phase after activating', () => {
+      schalter.set('active', true);
+      assert.equal(schalter.active, true, 'is active');
+      assert.equal(schalter.green, true, 'is green');
+    });
+
+
+    test('schalter should be in green phase and trigger event `green-phase-activated` ', (done) => {
+
+      let handler = () => {
+        assert.equal(schalter.active, true, 'is active');
+        assert.equal(schalter.green, true, 'is green');
+        schalter.removeEventListener('green-phase-activated', handler);
+
+        done();
+      };
+      schalter.addEventListener('green-phase-activated', handler);
+      schalter.set('active', true);
+
+    });
+
+    test('schalter should be in orange phase after green-phase-duration', (done) => {
+
+      schalter.set('greenPhaseDuration', 30);
+      schalter.set('orangePhaseDuration', 30);
+
+      let handler = () => {
+        assert.equal(schalter.green, false, 'is not green');
+        assert.equal(schalter.orange, true, 'is orange');
+        schalter.removeEventListener('orange-phase-activated', handler);
+        done();
+
+      };
+
+      schalter.addEventListener('orange-phase-activated', handler);
+      schalter.set('active', true);
+
+      assert.equal(schalter.active, true, 'is active');
+      assert.equal(schalter.green, true, 'is green');
+    });
+
+
+    test('schalter should be in red phase after orange-phase-duration', (done) => {
+
+      schalter.set('greenPhaseDuration', 30);
+      schalter.set('orangePhaseDuration', 30);
+
+      let handler = () => {
+        assert.equal(schalter.green, false, 'is not green');
+        assert.equal(schalter.orange, false, 'is not orange');
+        assert.equal(schalter.red, true, 'is red');
+        schalter.removeEventListener('red-phase-activated', handler);
+
+        done()
+      };
+
+      schalter.addEventListener('red-phase-activated', handler);
+      schalter.set('active', true);
+
+      assert.equal(schalter.active, true, 'is active');
+      assert.equal(schalter.green, true, 'is green');
+    });
+
+    test('schalter should be in red phase after orange-phase-duration and trigger alert', (done) => {
+
+      schalter.set('greenPhaseDuration', 30);
+      schalter.set('orangePhaseDuration', 30);
+
+      let handler = () => {
+        assert.equal(schalter.green, false, 'is not green');
+        assert.equal(schalter.orange, false, 'is not orange');
+        assert.equal(schalter.red, true, 'is red');
+        schalter.removeEventListener('alert', handler);
+        done()
+      };
+
+      schalter.addEventListener('alert', handler);
+      schalter.set('active', true);
+
+      assert.equal(schalter.active, true, 'is active');
+      assert.equal(schalter.green, true, 'is green');
+    });
+
+  });
+</script>
+
+</body>
+</html>

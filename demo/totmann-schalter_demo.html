@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>furo-util demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../totmann-schalter.html">
+  <link rel="import" href="../bower_components/flowbased-polymer/flow-bind.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </custom-style>
+</head>
+<body>
+<div class="vertical-section-container centered">
+  <h3>totmann-schalter to set a default page</h3>
+  <p>As long `routeData.page` is not set, the value of `page` will be view1.</p>
+  <demo-snippet>
+    <template>
+      <flow-bind>
+        <template>
+          <totmann-schalter ></totmann-schalter>
+        </template>
+      </flow-bind>
+    </template>
+  </demo-snippet>
+</div>
+</body>
+</html>
