@@ -15,7 +15,8 @@
                 "/lazy-load.html",
                 "/state-mixin.html",
                 "/default-value.html",
-                "/toggle-bool.html"
+                "/toggle-bool.html",
+                "/totmann-schalter.html"
             ],
             "exclude": [],
             "thresholds": {
