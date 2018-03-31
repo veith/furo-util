@@ -82,7 +82,7 @@
       debouncer.pulse('data2');
     });
 
-    test('pulse should ignore following pulses for immediate  for the next for 250ms', (done) => {
+    test('pulse should ignore following pulses for immediate de-bounces  for the next for 250ms', (done) => {
 
       debouncer.immediate = true;
       let handler = (e) => {
@@ -105,6 +105,26 @@
       },300)
     });
 
+
+    test('de-bounce pulse should be cancelable', (done) => {
+
+
+      let handler = (e) => {
+        assert.equal(true, false);
+        done()
+      };
+      let canclehandler = (e) => {
+        assert.equal(e.detail, 'reason for canceling');
+        done()
+      };
+
+      debouncer.addEventListener('triggered', handler);
+      debouncer.addEventListener('canceled', canclehandler);
+
+      debouncer.pulse('data1');
+      debouncer.cancel('reason for canceling');
+
+    });
 
 
   });

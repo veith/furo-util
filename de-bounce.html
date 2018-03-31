@@ -48,7 +48,7 @@
     /**
      * Trigger the debouncer. If immediate is true, the data of the first call is sent,
      * otherwise the data of the last call is used.
-     * @param data
+     * @param data {*}
      */
     pulse(data) {
 
@@ -57,13 +57,13 @@
       if (this._timeout === null) {
         if (this.immediate === false) {
           this._timeout = setTimeout(() => {
-            this.__fire();
+            this.__fire('triggered');
             clearTimeout(this._timeout);
             this._timeout = null;
           }, this.duration)
         } else {
           // fire immediatly
-          this.__fire();
+          this.__fire('triggered');
           this._timeout = setTimeout(() => {
             clearTimeout(this._timeout);
             this._timeout = null;
@@ -72,14 +72,32 @@
       }
     }
 
-    __fire() {
+    /**
+     * Cancels a started de-bounce.
+     */
+    cancel(data){
+      this._data = data;
+      clearTimeout(this._timeout);
+      this._timeout = null;
+      this.__fire('canceled');
+    }
+
+    __fire(eventName) {
       /**
+       * @event canceled
+       * Fired when debounce is canceled.
+       *
+       * detail payload: {*} data that was passed in to the cancel function
+       */
+
+       /**
        * @event triggered
        * Fired when debounce triggers. If immediate is true,
        * this event will be fired at the beginning and suppress the other pulses
+        *
        * detail payload: {*} data that was passed in to the pulse function
        */
-      let customEvent = new Event('triggered', {composed: true, bubbles: this.bubbles});
+      let customEvent = new Event(eventName, {composed: true, bubbles: this.bubbles});
       customEvent.detail = this._data;
       this._setWorking(false);
       this.dispatchEvent(customEvent);

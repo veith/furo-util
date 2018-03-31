@@ -73,6 +73,7 @@
        * Fired when In case of a successful load, cache the load event on the
        * link so that it can be used to short-circuit this method in the future
        * when it is called with the same href param.
+       *
        * detail payload: event
        */
       let customEvent = new Event('loaded', {composed: true, bubbles: true});
@@ -86,6 +87,7 @@
        * Fired when in case of an error, remove the link from the document so
        * that it will be automatically created again the next time
        * `importHref` is called.
+       *
        * detail payload: event
        */
       let customEvent = new Event('error', {composed: true, bubbles: true});
