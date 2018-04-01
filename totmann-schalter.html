@@ -11,8 +11,12 @@
       }
     </style>
 
-    <de-bounce ƒ-pulse="--switchActivated" ƒ-cancel="--switchDisabled,--signalReceived" duration="[[greenPhaseDuration]]" on-triggered="_greenCompleted" @-triggered="--greenCompleted"></de-bounce>
-    <de-bounce ƒ-pulse="--greenCompleted" ƒ-cancel="--switchDisabled,--signalReceived"  duration="[[orangePhaseDuration]]" on-triggered="_orangeCompleted" @-triggered="^alert,^red-phase-activated(lastSignalData)"></de-bounce>
+    <de-bounce ƒ-pulse="--switchActivated" ƒ-cancel="--switchDisabled,--signalReceived"
+               duration="[[greenPhaseDuration]]" on-triggered="_greenCompleted"
+               @-triggered="--greenCompleted"></de-bounce>
+    <de-bounce ƒ-pulse="--greenCompleted" ƒ-cancel="--switchDisabled,--signalReceived"
+               duration="[[orangePhaseDuration]]" on-triggered="_orangeCompleted"
+               @-triggered="^alert,^red-phase-activated(lastSignalData)"></de-bounce>
 
   </template>
 </dom-module>
@@ -42,8 +46,7 @@
    * @mixes FBPMixin
    * @polymer
    */
-
-    class TotmannSchalter extends FBPMixin(Polymer.Element) {
+  class TotmannSchalter extends FBPMixin(Polymer.Element) {
 
     constructor() {
       super();
@@ -81,60 +84,73 @@
         /**
          * Indicates that we are in the green phase
          */
-        green: {type: Boolean, value: false, readOnly:true, notify: true, reflectToAttribute:true},
+        green: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
         /**
          * Indicates that we are in the orange phase
          */
-        orange: {type: Boolean, value: false, readOnly:true, notify: true, reflectToAttribute:true},
+        orange: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
         /**
          * Indicates that we are in the red phase
          */
-        red: {type: Boolean, value: false, readOnly:true, notify: true, reflectToAttribute:true},
+        red: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
 
       }
     }
-    _activateObserver(active){
-      if(active){
-        this._setGreen(true);
-        /**
-        * @event green-phase-activated
-        * Fired when the green phase is activated
-         *
-        * detail payload: last signal data
-        */
-        let customEvent = new Event('green-phase-activated', {composed:true, bubbles: false});
-        customEvent.detail = this.lastSignalData;
-        this.dispatchEvent(customEvent);
 
-        this._FBPTriggerWire('--switchActivated');
-      }else{
+    _activateObserver(active) {
+      if (active) {
+        this._notifyGreenPhase();
+      } else {
+        this._setGreen(false);
+        this._setOrange(false);
+        this._setRed(false);
         this._FBPTriggerWire('--switchDisabled');
       }
+    }
+
+    _notifyGreenPhase() {
+
+      this._setGreen(true);
+      this._setOrange(false);
+
+      /**
+       * @event green-phase-activated
+       * Fired when the green phase is activated
+       *
+       * detail payload: last signal data
+       */
+      let customEvent = new Event('green-phase-activated', {composed: true, bubbles: false});
+      customEvent.detail = this.lastSignalData;
+      this.dispatchEvent(customEvent);
+      this._FBPTriggerWire('--switchActivated');
     }
 
     /**
      * green phase is completed
      */
-    _greenCompleted(){
+    _greenCompleted() {
       this._setGreen(false);
       this._setOrange(true);
+      this._notifyOrangePhase();
+    }
 
+
+    _notifyOrangePhase() {
       /**
        * @event orange-phase-activated
        * Fired when the green phase is activated
        *
        * detail payload: last signal data
        */
-      let customEvent = new Event('orange-phase-activated', {composed:true, bubbles: false});
+      let customEvent = new Event('orange-phase-activated', {composed: true, bubbles: false});
       customEvent.detail = this.lastSignalData;
       this.dispatchEvent(customEvent);
     }
-    
-    
+
     /**
      * orange phase is completed
      */
-    _orangeCompleted(){
+    _orangeCompleted() {
       this._setOrange(false);
       this._setRed(true);
 
@@ -144,20 +160,24 @@
        *
        * detail payload: last signal data
        */
-      let customEvent = new Event('red-phase-activated', {composed:true, bubbles: false});
+      let customEvent = new Event('red-phase-activated', {composed: true, bubbles: false});
       customEvent.detail = this.lastSignalData;
       this.dispatchEvent(customEvent);
     }
-    
-    
+
+
     /**
      * Your signal to show, that you are alife
      *
      * If signal is not called in the defined times, the `alert` event will be triggered
      */
     signal(data) {
-      this.lastSignalData = data;
-      this._FBPTriggerWire('--signalReceived')
+
+      if (!this.red) {
+        this.lastSignalData = data;
+        this._FBPTriggerWire('--signalReceived');
+        this._notifyGreenPhase();
+      }
     }
   }
 

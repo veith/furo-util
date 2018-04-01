@@ -95,6 +95,7 @@
       assert.equal(schalter.green, true, 'is green');
     });
 
+
     test('schalter should be in red phase after orange-phase-duration and trigger alert', (done) => {
 
       schalter.set('greenPhaseDuration', 30);
@@ -113,6 +114,102 @@
 
       assert.equal(schalter.active, true, 'is active');
       assert.equal(schalter.green, true, 'is green');
+    });
+
+    test('signal in green phase should reset timers', (done) => {
+
+      schalter.set('greenPhaseDuration', 60);
+      schalter.set('orangePhaseDuration', 60);
+      let loops = 0;
+      let handler = () => {
+        assert.equal(schalter.green, true, 'is  green');
+        assert.equal(schalter.orange, false, 'is not orange');
+        assert.equal(schalter.red, false, 'is not red');
+
+
+        if (loops === 3) {
+
+          schalter.removeEventListener('green-phase-activated', handler);
+          done()
+        } else {
+          setTimeout(() => {
+            schalter.signal(++loops);
+          }, 30);
+        }
+
+      };
+
+      schalter.addEventListener('green-phase-activated', handler);
+      schalter.set('active', true);
+
+
+      assert.equal(schalter.active, true, 'is active');
+      assert.equal(schalter.green, true, 'is green');
+    });
+
+    test('signal in orange phase should reset timers', (done) => {
+
+      schalter.set('greenPhaseDuration', 60);
+      schalter.set('orangePhaseDuration', 60);
+      let loops = 0;
+      let handler = () => {
+        assert.equal(schalter.green, false, 'is  green');
+        assert.equal(schalter.orange, true, 'is not orange');
+        assert.equal(schalter.red, false, 'is not red');
+
+        if (loops === 3) {
+          schalter.removeEventListener('orange-phase-activated', handler);
+          done()
+        } else {
+          setTimeout(() => {
+
+            schalter.signal(++loops);
+
+          }, 30);
+        }
+
+      };
+
+      schalter.addEventListener('orange-phase-activated', handler);
+      schalter.set('active', true);
+
+
+      assert.equal(schalter.active, true, 'is active');
+      assert.equal(schalter.green, true, 'is green');
+    });
+    test('signal in red phase should have no effects', (done) => {
+
+      schalter.set('greenPhaseDuration', 60);
+      schalter.set('orangePhaseDuration', 60);
+      let loops = 0;
+      let handler = () => {
+        assert.equal(schalter.green, false, 'is not green');
+        assert.equal(schalter.orange, false, 'is not orange');
+        assert.equal(schalter.red, true, 'is  red');
+        setTimeout(() => {
+          schalter.signal(++loops);
+        }, 10);
+
+
+      };
+
+      schalter.addEventListener('red-phase-activated', handler);
+      schalter.set('active', true);
+
+
+      assert.equal(schalter.active, true, 'is active');
+      assert.equal(schalter.green, true, 'is green');
+
+      setTimeout(() => {
+
+        assert.equal(schalter.green, false, 'is not green');
+        assert.equal(schalter.orange, false, 'is not orange');
+        assert.equal(schalter.red, true, 'is  red');
+        schalter.removeEventListener('red-phase-activated', handler);
+        done()
+
+      }, 150);
+
     });
 
   });

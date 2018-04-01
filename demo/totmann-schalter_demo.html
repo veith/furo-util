@@ -10,8 +10,11 @@
 
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../flowbased-polymer/flow-bind.html">
+  <link rel="import" href="../../iron-icons/iron-icons.html">
+  <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
   <link rel="import" href="../totmann-schalter.html">
-  <link rel="import" href="../bower_components/flowbased-polymer/flow-bind.html">
 
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -19,14 +22,40 @@
   </custom-style>
 </head>
 <body>
+
+
 <div class="vertical-section-container centered">
-  <h3>totmann-schalter to set a default page</h3>
-  <p>As long `routeData.page` is not set, the value of `page` will be view1.</p>
+  <h3>totmann-schalter</h3>
+
+  <h3>Dharma Initiative simulator: </h3>
+  <p>After the system is activated, press the symbol every 10 seconds.
+    If you entered the orange phase, you have another 10 seconds to press the symbol.
+    If the symbol turns red, you lost</p>
   <demo-snippet>
     <template>
       <flow-bind>
         <template>
-          <totmann-schalter ></totmann-schalter>
+          <style>
+
+            paper-icon-button[green] {
+              color: green;
+            }
+
+            paper-icon-button[orange] {
+              color: orange;
+            }
+
+            paper-icon-button[red] {
+              color: red;
+            }
+          </style>
+          <paper-toggle-button active="{{active}}">Activate the swan</paper-toggle-button>
+          <paper-icon-button icon="warning" orange$="[[orange]]" green$="[[green]]" red$="[[red]]"
+                             @-click="--btnClicked"></paper-icon-button>
+
+          <totmann-schalter green-phase-duration="10000" active="[[active]]" orange="{{orange}}" red="{{red}}"
+                            green="{{green}}" ƒ-signal="--btnClicked"></totmann-schalter>
+
         </template>
       </flow-bind>
     </template>
