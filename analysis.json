@@ -31596,7 +31596,7 @@
       "tagname": "de-bounce"
     },
     {
-      "description": "`totmann-schalter`\n\n A dead man's switch is a switch that is automatically operated if the human operator becomes incapacitated,\n such as through death, loss of consciousness, or being bodily removed from control.\n Originally applied to switches on a vehicle or machine, it has since come to be used to describe other\n intangible uses like in computer software.\n\n These switches are usually used as a form of fail-safe where they stop a machine with no operator from\n potentially dangerous action or incapacitate a device as a result of accident, malfunction, or misuse.\n They are common in such applications in locomotives, aircraft refuelling, freight elevators, lawn mowers,\n tractors, personal watercraft, outboard motors, chainsaws, snowblowers, tread machines, snowmobiles,\n amusement rides, and many medical imaging devices. On some machines, these switches merely bring the machines\n back to a safe state, such as reducing the throttle to idle or applying brakes while leaving the machines still\n running and ready to resume normal operation once control is reestablished.\n [Wikipedia](https://en.wikipedia.org/wiki/Dead_man%27s_switch)",
+      "description": "`totmann-schalter`\n\n A dead man's switch is a switch that is automatically operated if the human operator becomes incapacitated,\n such as through death, loss of consciousness, or being bodily removed from control.\n Originally applied to switches on a vehicle or machine, it has since come to be used to describe other\n intangible uses like in computer software.\n\n These switches are usually used as a form of fail-safe where they stop a machine with no operator from\n potentially dangerous action or incapacitate a device as a result of accident, malfunction, or misuse.\n They are common in such applications in locomotives, aircraft refuelling, freight elevators, lawn mowers,\n tractors, personal watercraft, outboard motors, chainsaws, snowblowers, tread machines, snowmobiles,\n amusement rides, and many medical imaging devices. On some machines, these switches merely bring the machines\n back to a safe state, such as reducing the throttle to idle or applying brakes while leaving the machines still\n running and ready to resume normal operation once control is reestablished.\n [Wikipedia](https://en.wikipedia.org/wiki/Dead_man%27s_switch)\n\n## Phases\n\n```\noff -> on -> green phase -> orange phase -> red phase -> off\n            ^                            |\n            |__________ƒ-signal__________|\n\ntrigger the `ƒ-signal` to reset the internal timers (greenPhaseDuration + orangePhaseDuration)\n\n````\n\n## Warning\nIf you are in the `red phase` the `signal will have no effect. You have to deactivate and reactivate the system.",
       "summary": "",
       "path": "totmann-schalter.html",
       "properties": [
@@ -31607,11 +31607,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 65,
+              "line": 77,
               "column": 8
             },
             "end": {
-              "line": 65,
+              "line": 77,
               "column": 56
             }
           },
@@ -31627,11 +31627,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 71,
+              "line": 83,
               "column": 8
             },
             "end": {
-              "line": 71,
+              "line": 83,
               "column": 57
             }
           },
@@ -31647,11 +31647,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 75,
+              "line": 87,
               "column": 8
             },
             "end": {
-              "line": 75,
+              "line": 87,
               "column": 68
             }
           },
@@ -31669,11 +31669,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 82,
+              "line": 94,
               "column": 8
             },
             "end": {
-              "line": 82,
+              "line": 94,
               "column": 90
             }
           },
@@ -31692,11 +31692,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 86,
+              "line": 98,
               "column": 8
             },
             "end": {
-              "line": 86,
+              "line": 98,
               "column": 100
             }
           },
@@ -31715,11 +31715,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 90,
+              "line": 102,
               "column": 8
             },
             "end": {
-              "line": 90,
+              "line": 102,
               "column": 101
             }
           },
@@ -31738,11 +31738,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 94,
+              "line": 106,
               "column": 8
             },
             "end": {
-              "line": 94,
+              "line": 106,
               "column": 98
             }
           },
@@ -31886,11 +31886,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 99,
+              "line": 111,
               "column": 4
             },
             "end": {
-              "line": 108,
+              "line": 120,
               "column": 5
             }
           },
@@ -31907,11 +31907,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 110,
+              "line": 122,
               "column": 4
             },
             "end": {
-              "line": 125,
+              "line": 137,
               "column": 5
             }
           },
@@ -31924,11 +31924,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 130,
+              "line": 142,
               "column": 4
             },
             "end": {
-              "line": 134,
+              "line": 146,
               "column": 5
             }
           },
@@ -31941,11 +31941,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 137,
+              "line": 149,
               "column": 4
             },
             "end": {
-              "line": 147,
+              "line": 159,
               "column": 5
             }
           },
@@ -31958,11 +31958,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 152,
+              "line": 164,
               "column": 4
             },
             "end": {
-              "line": 165,
+              "line": 177,
               "column": 5
             }
           },
@@ -31975,11 +31975,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 173,
+              "line": 185,
               "column": 4
             },
             "end": {
-              "line": 180,
+              "line": 192,
               "column": 5
             }
           },
@@ -32001,11 +32001,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 48,
+          "line": 60,
           "column": 2
         },
         "end": {
-          "line": 181,
+          "line": 193,
           "column": 3
         }
       },
@@ -32018,11 +32018,11 @@
           "description": "Duration of the green phase in ms.\n\nDefault is 30s.",
           "sourceRange": {
             "start": {
-              "line": 65,
+              "line": 77,
               "column": 8
             },
             "end": {
-              "line": 65,
+              "line": 77,
               "column": 56
             }
           },
@@ -32034,11 +32034,11 @@
           "description": "Duration of the orange phase in ms.\n\nDefault is 10s.",
           "sourceRange": {
             "start": {
-              "line": 71,
+              "line": 83,
               "column": 8
             },
             "end": {
-              "line": 71,
+              "line": 83,
               "column": 57
             }
           },
@@ -32050,11 +32050,11 @@
           "description": "Data of the last signal.",
           "sourceRange": {
             "start": {
-              "line": 75,
+              "line": 87,
               "column": 8
             },
             "end": {
-              "line": 75,
+              "line": 87,
               "column": 68
             }
           },
@@ -32066,11 +32066,11 @@
           "description": "Is the switch active? Set to true or use the activate method to activate the totmann-schalter.\n\nSet to false or use the deactivate method to deactivate the totmann-schalter.",
           "sourceRange": {
             "start": {
-              "line": 82,
+              "line": 94,
               "column": 8
             },
             "end": {
-              "line": 82,
+              "line": 94,
               "column": 90
             }
           },
@@ -32082,11 +32082,11 @@
           "description": "Indicates that we are in the green phase",
           "sourceRange": {
             "start": {
-              "line": 86,
+              "line": 98,
               "column": 8
             },
             "end": {
-              "line": 86,
+              "line": 98,
               "column": 100
             }
           },
@@ -32098,11 +32098,11 @@
           "description": "Indicates that we are in the orange phase",
           "sourceRange": {
             "start": {
-              "line": 90,
+              "line": 102,
               "column": 8
             },
             "end": {
-              "line": 90,
+              "line": 102,
               "column": 101
             }
           },
@@ -32114,11 +32114,11 @@
           "description": "Indicates that we are in the red phase",
           "sourceRange": {
             "start": {
-              "line": 94,
+              "line": 106,
               "column": 8
             },
             "end": {
-              "line": 94,
+              "line": 106,
               "column": 98
             }
           },

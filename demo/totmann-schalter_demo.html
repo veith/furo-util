@@ -49,7 +49,7 @@
               color: red;
             }
           </style>
-          <paper-toggle-button active="{{active}}">Activate the swan</paper-toggle-button>
+          <paper-toggle-button active="{{active}}" disabled="[[active]]">Activate the swan</paper-toggle-button>
           <paper-icon-button icon="warning" orange$="[[orange]]" green$="[[green]]" red$="[[red]]"
                              @-click="--btnClicked"></paper-icon-button>
 

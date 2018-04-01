@@ -39,7 +39,19 @@
    *  running and ready to resume normal operation once control is reestablished.
    *  [Wikipedia](https://en.wikipedia.org/wiki/Dead_man%27s_switch)
    *
+   *## Phases
    *
+   * ```
+   * off -> on -> green phase -> orange phase -> red phase -> off
+   *             ^                            |
+   *             |__________ƒ-signal__________|
+   *
+   * trigger the `ƒ-signal` to reset the internal timers (greenPhaseDuration + orangePhaseDuration)
+   *
+   *````
+   *
+   *## Warning
+   * If you are in the `red phase` the `signal will have no effect. You have to deactivate and reactivate the system.
    *
    * @customElement
    * @demo demo/totmann-schalter_demo.html
