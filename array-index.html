@@ -93,7 +93,7 @@
                      */
                     let customEvent = new Event('index-resolved', {composed: true, bubbles: this.bubbles});
                     customEvent.detail = newIndex;
-                    self.dispatchEvent(customEvent);
+                    this.dispatchEvent(customEvent);
                 }
             }
 
