@@ -72,7 +72,7 @@
                 }
             }
 
-            /*
+            /**
              * index mit resolvePath oder path durch objekt aus dem Array ermitteln
              * und setzen von index und selectedItem
              * @param data Object
@@ -86,6 +86,14 @@
                 });
                 if (newIndex !== -1) {
                     this.set('index', newIndex);
+                    /**
+                     * @event index-resolved
+                     * Wird gefeuert wenn der Index gefunden wurde
+                     * detail payload: der index
+                     */
+                    let customEvent = new Event('index-resolved', {composed: true, bubbles: this.bubbles});
+                    customEvent.detail = newIndex;
+                    self.dispatchEvent(customEvent);
                 }
             }
 
