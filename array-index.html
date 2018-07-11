@@ -1,101 +1,125 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../polymer/polymer-element.html">
 
-
-<script>
+<dom-module id="array-index">
+  <script>
     /**
      * `array-index`
      *
-     * Finds the first index in an array of objects by a given path and value.
-     *
-     *
-     *
+     * Finds the index of an item in an array
      *
      * @customElement
      * @polymer
      * @demo demo/index.html
      */
     class ArrayIndex extends Polymer.Element {
-        static get is() {
-            return 'array-index';
+      static get is() {
+        return 'array-index';
+      }
+
+
+      static get properties() {
+        return {
+          /**
+           * aktueller Index
+           */
+          index: {type: Number, notify: true},
+          /**
+           * Input Array
+           */
+          array: {type: Array},
+          /**
+           * Referenz auf das gewählte Item aus array.
+           *
+           * => array[index]
+           */
+          selectedItem: {type: Object, notify: true},
+          /**
+           * Path des Wertes im einzelnen Objekt
+           */
+          path: {type: String},
+          /**
+           * Pfad im Suchobjekt der für das resolven verwendet wird
+           */
+          resolvePath: {type: String},
+          /**
+           * item
+           * Objekt das als sucher verwendet wird (gleich wie data aus resolve(data)
+           */
+          item: {
+            type: Object
+          },
+          /**
+           * Wert aus array[index].path  (deep)
+           */
+          pathValue: {type: Object, notify: true},
+          /**
+           * Search only with search()
+           */
+          searchOnTriggerOnly: {
+            type: Boolean,
+            value: false,
+          }
+        };
+      }
+
+
+      static get observers() {
+        return ['_indexChanged(index,array)', '_resolve(array,item)'];
+      }
+
+      _resolve(array, item) {
+        if (!this.searchOnTriggerOnly) {
+          if (array && array.length > 0 && item !== undefined) {
+            this.resolve(item);
+          }
         }
+      }
 
-
-        static get properties() {
-            return {
-                /**
-                 * aktueller Index
-                 */
-                index: {type: Number, notify: true},
-                /**
-                 * Input Array
-                 */
-                array: {type: Array},
-                /**
-                 * Referenz auf das gewählte Item aus array.
-                 *
-                 * => array[index]
-                 */
-                selectedItem: {type: Object, notify: true},
-                /**
-                 * Path des Wertes im einzelnen Objekt
-                 */
-                path: {type: String},
-                /**
-                 * Pfad im Suchobjekt der für das resolven verwendet wird
-                 */
-                resolvePath: {type: String},
-              /**
-              * item
-              * Objekt das als sucher verwendet wird (gleich wie data aus resolve(data)
-              */
-              item : {
-                    type: Object
-              },
-                /**
-                 * Wert aus array[index].path  (deep)
-                 */
-                pathValue: {type: Object, notify: true},
-            };
+      /**
+       * index mit resolvePath oder path durch objekt aus dem Array ermitteln
+       * und setzen von index und selectedItem
+       * @param data Object
+       */
+      resolve(data) {
+        let resolvePath = this.resolvePath || this.path;
+        let path = this.path;
+        let searchForValue = Polymer.Path.get(data, resolvePath);
+        let newIndex = this.array.findIndex((i) => {
+          return Polymer.Path.get(i, path) === searchForValue;
+        });
+        if (newIndex !== -1) {
+          this.set('index', newIndex);
+          /**
+           * @event index-resolved
+           * Wird gefeuert wenn der Index gefunden wurde
+           * detail payload: der index
+           */
+          let customEvent = new Event('index-resolved', {composed: true, bubbles: this.bubbles});
+          customEvent.detail = newIndex;
+          this.dispatchEvent(customEvent);
         }
+      }
 
+      /**
+       * Sucht den index mit den gegebenen Werten
+       */
+      search() {
+        this.resolve(this.item)
+      }
 
-        static get observers() {
-            return ['_indexChanged(index,array)','_resolve(array,item)'];
-        }
-
-        _resolve(array,item){
-            if(array && array.length > 0 && item !== undefined){
-                this.resolve(item);
+      _indexChanged(index, array) {
+        if (!this.searchOnTriggerOnly) {
+          if (index !== undefined && array) {
+            if (this.selectedItem !== array[index]) {
+              this.set('selectedItem', array[index]);
             }
+            this.set('pathValue', Polymer.Path.get(array[index], this.path));
+          }
         }
-        /*
-         * index mit resolvePath oder path durch objekt aus dem Array ermitteln
-         * und setzen von index und selectedItem
-         * @param data Object
-         */
-        resolve(data) {
-            let resolvePath = this.resolvePath || this.path;
-            let path = this.path;
-            let searchForValue = Polymer.Path.get(data, resolvePath);
-            let newIndex = this.array.findIndex((i) => {
-                return Polymer.Path.get(i, path) === searchForValue;
-            });
-            if (newIndex !== -1) {
-                this.set('index', newIndex);
-            }
-        }
-
-        _indexChanged(index, array) {
-            if (index !== undefined && array) {
-
-                if (this.selectedItem !== array[index]) {
-                this.set('selectedItem', array[index]);
-                }
-                this.set('pathValue', Polymer.Path.get(array[index], this.path));
-            }
-        }
+      }
     }
 
     window.customElements.define(ArrayIndex.is, ArrayIndex);
 
-</script>
+  </script>
+</dom-module>
