@@ -1,37 +1,68 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
-<script>
-  /**
-   * `event-gate` forwards an event when `gate` is open.
-   *
-   *  <event-gate open="[[isOpen]]" ƒ-trigger="--something-clicked" @-triggered="--click-event-passed"></event-gate>
-   *
-   * @customElement
-   * @polymer
-   */
-  class EventGate extends (Polymer.Element) {
-    constructor() {
-      super();
-    }
 
-    static get is() {
-      return 'event-gate';
-    }
+<dom-module id="event-gate">
+  <script>
+    /**
+     * `event-gate` forwards an event when `gate` is open.
+     *
+     * **Events pass:**
+     *```
+     *<event-gate pass="[[isTrue]]" ƒ-trigger="--something-clicked" @-triggered="--click-event-passed"></event-gate>
+     *<event-gate block="[[isFalse]]" ƒ-trigger="--something-clicked" @-triggered="--click-event-passed"></event-gate>
+     *```
+     * **Events does not pass:**
+     *```
+     *<event-gate pass="[[isFalse]]" ƒ-trigger="--something-clicked" @-triggered="--click-event-passed"></event-gate>
+     *<event-gate block="[[isTrue]]" ƒ-trigger="--something-clicked" @-triggered="--click-event-passed"></event-gate>
+     *```
+     * @customElement
+     * @polymer
+     */
+    class EventGate extends (Polymer.Element) {
+      constructor() {
+        super();
+      }
 
-    static get properties() {
-      return {
-        bubbles: Boolean,
-        open: Boolean,
-        closed: Boolean
+      static get is() {
+        return 'event-gate';
+      }
+
+      static get properties() {
+        return {
+          bubbles: {type: Boolean, value: false},
+          pass: {type: Boolean},
+          block: {type: Boolean},
+          _queue: {type: Boolean},
+        }
+      }
+
+      static get observers() {
+        return ['_check(pass,block,_queue)'];
+      }
+
+      _check(pass, block, _queue) {
+        if ((pass === true || block === false) && _queue === true) {
+          /**
+           * @event triggered
+           * Fired when alles stimmt
+           * detail payload: original event data passed in on trigger method
+           */
+          let customEvent = new Event('triggered', {composed: true, bubbles: this.bubbles});
+          customEvent.detail = this.__e;
+          this.dispatchEvent(customEvent);
+
+          this.set('_queue', false);
+        }
+      }
+
+      trigger(e) {
+        this.__e = e;
+        this.set('_queue', true)
       }
     }
 
-    trigger(e) {
+    window.customElements.define(EventGate.is, EventGate);
 
-
-    }
-  }
-
-  window.customElements.define(EventGate.is, EventGate);
-
-</script>
+  </script>
+</dom-module>

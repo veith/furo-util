@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>shared-config</title>
+
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../event-gate.html">
+</head>
+<body>
+
+<test-fixture id="basic">
+  <template>
+    <event-gate></event-gate>
+  </template>
+</test-fixture>
+
+<script>
+  suite('shared-config', () => {
+    let gate;
+    setup(() => {
+      gate = fixture('basic');
+    });
+    test('instantiating the element', () => {
+      assert.equal(gate.nodeName, 'EVENT-GATE');
+    });
+
+    test('gate schaltet wenn pass true ist', (done) => {
+      gate.set('pass', true);
+      gate.addEventListener('triggered', (e) => {
+        assert.equal(e.detail, 1234);
+        done();
+      });
+      gate.trigger(1234);
+    });
+
+
+
+
+    test('gate schaltet wenn pass nachträglich auf true gesetzt wird', (done) => {
+      gate.addEventListener('triggered', (e) => {
+        assert.equal(e.detail, 1234);
+        done();
+      });
+      gate.trigger(1234);
+      gate.set('pass', true);
+    });
+
+
+
+    test('gate schaltet wenn block false ist', (done) => {
+      gate.set('block', false);
+      gate.addEventListener('triggered', (e) => {
+        assert.equal(e.detail, 1234);
+        done();
+      });
+      gate.trigger(1234);
+    });
+
+
+    test('gate schaltet nicht wenn block true ist', () => {
+      gate.set('block', true);
+      gate.addEventListener('triggered', (e) => {
+        assert.fail();
+      });
+      gate.trigger(1234);
+    });
+
+
+
+
+    test('gate schaltet nicht wenn pass false ist', () => {
+      gate.set('pass', false);
+      gate.addEventListener('triggered', (e) => {
+        assert.fail();
+      });
+      gate.trigger(1234);
+    });
+
+
+
+    test('gate schaltet wenn block nachträglich auf false gesetzt wird', (done) => {
+      gate.addEventListener('triggered', (e) => {
+        assert.equal(e.detail, 1234);
+        done();
+      });
+      gate.trigger(1234);
+      gate.set('block', false);
+    });
+
+
+
+  });
+</script>
+
+</body>
+</html>
