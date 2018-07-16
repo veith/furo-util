@@ -16,6 +16,7 @@
                 "/state-mixin.html",
                 "/default-value.html",
                 "/toggle-bool.html",
+                "/event-gate.html",
                 "/totmann-schalter.html"
             ],
             "exclude": [],
