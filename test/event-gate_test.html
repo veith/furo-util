@@ -52,6 +52,20 @@
 
 
 
+    test('gate schaltet NICHT wenn pass nachträglich auf true gesetzt wird (notifyOnTriggerOnly)', (done) => {
+      gate.addEventListener('triggered', (e) => {
+        assert.equal(e.detail, 5678);
+        done();
+      });
+      gate.set('notifyOnTriggerOnly', true);
+
+      gate.trigger(1234);
+      gate.set('pass', true);
+      gate.trigger(5678);
+    });
+
+
+
     test('gate schaltet wenn block false ist', (done) => {
       gate.set('block', false);
       gate.addEventListener('triggered', (e) => {

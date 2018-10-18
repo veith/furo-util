@@ -33,6 +33,10 @@
           bubbles: {type: Boolean, value: false},
           pass: {type: Boolean},
           block: {type: Boolean},
+          /**
+           * Set this to true if you dont want queued events
+           */
+          notifyOnTriggerOnly: {type: Boolean, value: false,},
           _queue: {type: Boolean},
         }
       }
@@ -52,6 +56,9 @@
           customEvent.detail = this.__e;
           this.dispatchEvent(customEvent);
 
+          this.set('_queue', false);
+        }
+        if (this.notifyOnTriggerOnly) {
           this.set('_queue', false);
         }
       }
